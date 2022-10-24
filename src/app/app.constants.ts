@@ -11,6 +11,7 @@ export const RC_CLASS_LEVEL_SUB_API_URL = `${RC_SERVER_URL}/api/class_level_sub`
 export const RC_CLASS_LIST_API_URL = `${RC_SERVER_URL}/api/class_list`;
 export const RC_DEFAULT_API_URL = `${RC_SERVER_URL}/api/default`;
 export const RC_GRADE_API_URL = `${RC_SERVER_URL}/api/grade`;
+export const RC_PAYMENT_SETTING_API_URL = `${RC_SERVER_URL}/api/payment-setting`;
 export const RC_REPORT_CARD_API_URL = `${RC_SERVER_URL}/api/rc`;
 export const RC_SCHOOL_API_URL = `${RC_SERVER_URL}/api/school`;
 export const RC_SECTION_API_URL = `${RC_SERVER_URL}/api/section`;

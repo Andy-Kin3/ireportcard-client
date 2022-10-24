@@ -7,7 +7,7 @@ import {
   RC_CLASS_LEVEL_SUB_API_URL,
   RC_CLASS_LIST_API_URL,
   RC_DEFAULT_API_URL,
-  RC_GRADE_API_URL,
+  RC_GRADE_API_URL, RC_PAYMENT_SETTING_API_URL,
   RC_REPORT_CARD_API_URL,
   RC_SCHOOL_API_URL,
   RC_SECTION_API_URL,
@@ -42,6 +42,7 @@ import {UserService} from "./services/user.service";
 import {TeacherService} from "./services/teacher.service";
 import {SubjectTeacherService} from "./services/subject-teacher.service";
 import {StudentClassLevelService} from "./services/student-class-level.service";
+import {PaymentSettingService} from "./services/payment-setting.service";
 
 const academicYearInjectables: Array<any> = [
   {provide: AcademicYearService, useClass: AcademicYearService},
@@ -66,7 +67,11 @@ const classListInjectables: Array<any> = [
 const gradeInjectables: Array<any> = [
   {provide: GradeService, useClass: GradeService},
   {provide: RC_GRADE_API_URL, useValue: RC_GRADE_API_URL}
-]
+];
+const paymentSettingInjectables: Array<any> = [
+  {provide: PaymentSettingService, useClass: PaymentSettingService},
+  {provide: RC_PAYMENT_SETTING_API_URL, useValue: RC_PAYMENT_SETTING_API_URL}
+];
 const reportCardInjectables: Array<any> = [
   {provide: ReportCardService, useClass: ReportCardService},
   {provide: RC_REPORT_CARD_API_URL, useValue: RC_REPORT_CARD_API_URL},
@@ -133,6 +138,7 @@ export const injectables = [
   classLevelSubInjectables,
   classListInjectables,
   gradeInjectables,
+  paymentSettingInjectables,
   reportCardInjectables,
   schoolInjectables,
   sectionInjectables,
