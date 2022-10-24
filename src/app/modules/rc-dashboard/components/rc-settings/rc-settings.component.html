@@ -47,7 +47,27 @@
         </div>
         <div class="col-12">
           <button [disabled]="!settingsForm.valid" class="w-full md:w-10rem lg:w-20rem" pButton type="submit"
-                  label="Save"></button>
+                  label="Save school settings"></button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="py-4">
+    <form [formGroup]="paymentSettingsForm" (submit)="savePaymentSettingsAction()">
+      <div class="grid formgrid p-fluid pb-3">
+        <div class="col-12 md:col-6 py-2 field">
+          <label
+            class="block text-800 font-medium mb-2">Tuition Fee</label>
+          <p-inputNumber [formControlName]="'tuitionFee'"></p-inputNumber>
+        </div>
+        <div class="col-12 md:col-6 py-2 field">
+          <label class="block text-800 font-medium mb-2">Application Fee</label>
+          <p-inputNumber [formControlName]="'applicationFee'" class="w-full"></p-inputNumber>
+        </div>
+        <div class="col-12">
+          <button [disabled]="!paymentSettingsForm.valid" class="w-full md:w-10rem lg:w-20rem" pButton type="submit"
+                  label="Save payment settings"></button>
         </div>
       </div>
     </form>

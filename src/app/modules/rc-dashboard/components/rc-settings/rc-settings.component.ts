@@ -13,6 +13,8 @@ import {School} from "../../../../models/dto/school.model";
 import {LocalStorageUtil} from "../../../../utils/local-storage.util";
 import {Section} from "../../../../models/dto/section.model";
 import {SectionService} from "../../../../services/section.service";
+import {PaymentSetting} from "../../../../models/dto/payment-setting.model";
+import {PaymentSettingService} from "../../../../services/payment-setting.service";
 
 @Component({
   selector: 'app-rc-settings',
@@ -23,6 +25,7 @@ export class RcSettingsComponent implements OnInit {
 
   schoolId: number | null = LocalStorageUtil.readSchoolId();
   settingsForm: FormGroup = this.fb.group({});
+  paymentSettingsForm: FormGroup = this.fb.group({});
   school?: School;
   sections: Section[] = [];
   sequences: Sequence[] = [];
@@ -39,18 +42,21 @@ export class RcSettingsComponent implements OnInit {
     private sectionService: SectionService,
     private sequenceService: SequenceService,
     private termService: TermService,
-    private academicYearService: AcademicYearService
+    private academicYearService: AcademicYearService,
+  private _paymentSettingService: PaymentSettingService,
   ) {
   }
 
   ngOnInit(): void {
     this.loadSchool();
     this.loadSettingsInfo();
+    /*
     this.settingsForm = this.fb.group({
       applicationsOpen: [false, Validators.required], name: ["", Validators.required], year: [0, Validators.required],
       term: ["", Validators.required], sequence: [0, Validators.required],
       maxGrade: [0, Validators.compose([Validators.min(0), Validators.max(100)])]
     });
+     */
     this.settingsForm = this.fb.group({
       applicationsOpen: [this.school ? this.school.applicationOpen : false, Validators.required],
       name: [this.school ? this.school.name : '', Validators.required],
@@ -58,6 +64,10 @@ export class RcSettingsComponent implements OnInit {
       term: [this.school ? (this.school.currentTerm ? this.school.currentTerm : 'None') : 'None'],
       sequence: [this.school ? (this.school.currentSequenceId ? this.school.currentSequenceId : -1) : -1, Validators.required],
       maxGrade: [this.school ? this.school.maxGrade : -1, Validators.compose([Validators.min(0), Validators.max(100)])]
+    });
+    this.paymentSettingsForm = this.fb.group({
+      tuitionFee: [0, [Validators.required, Validators.min(0)]],
+      applicationFee: [0, [Validators.required, Validators.min(0)]],
     });
   }
 
@@ -69,12 +79,20 @@ export class RcSettingsComponent implements OnInit {
     if (school.currentYearId) this.settingsForm.patchValue({year: school.currentYearId});
   }
 
+  patchPaymentSettingsForm = (paymentSetting: PaymentSetting) => {
+    this.paymentSettingsForm.patchValue({tuitionFee: paymentSetting.tuitionFee});
+    this.paymentSettingsForm.patchValue({applicationFee: paymentSetting.applicationFee});
+  }
+
   loadSchool(): void {
     this.schoolId = LocalStorageUtil.readSchoolId();
     if (this.schoolId) {
       this.schoolService.getById(this.schoolId).subscribe((school) => {
         this.school = school;
         this.patchSettingsForm(school);
+      });
+      this._paymentSettingService.getBySchoolId(this.schoolId).subscribe((paymentSetting) => {
+        if (paymentSetting) this.patchPaymentSettingsForm(paymentSetting);
       });
     }
   }
@@ -106,6 +124,18 @@ export class RcSettingsComponent implements OnInit {
         ownerId: this.school.ownerId
       }
       this.schoolService.update(school).subscribe(() => this.loadSchool());
+    }
+  }
+
+  savePaymentSettingsAction() {
+    if (this.school) {
+      const paymentSetting = new PaymentSetting(
+        -1,
+        this.paymentSettingsForm.get('tuitionFee')?.value,
+        this.paymentSettingsForm.get('applicationFee')?.value,
+        this.school.id
+      );
+      this._paymentSettingService.save(paymentSetting).subscribe(() => this.loadSchool());
     }
   }
 
