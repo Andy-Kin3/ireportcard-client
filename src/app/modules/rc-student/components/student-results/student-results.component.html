@@ -4,7 +4,7 @@
                 [(ngModel)]="rcRequest.academicYearId" (ngModelChange)="requestResults()"></p-dropdown>
     <p-dropdown [options]="terms" [optionLabel]="'name'" [optionValue]="'id'"
                 [(ngModel)]="rcRequest.termId" (ngModelChange)="requestResults()"></p-dropdown>
-    <p-dropdown [options]="studentClassLevels" [optionLabel]="'name'" [optionValue]="'sub_id'"
+    <p-dropdown [options]="studentClassLevels" [optionLabel]="'name'" [optionValue]="'subId'"
                 [(ngModel)]="rcRequest.classLevelSubId" (ngModelChange)="requestResults()"></p-dropdown>
   </div>
   <div *ngIf="reportCardModel" class=" shadow-2">

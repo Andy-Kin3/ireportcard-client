@@ -102,12 +102,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         routerLinkActiveOptions: {exact: true},
       },
       {
-        label: 'Class Lists',
-        icon: 'pi pi-fw pi-folder',
-        routerLink: ['/dashboard/class-list'],
-        routerLinkActiveOptions: {exact: true},
-      },
-      {
         label: 'Settings',
         icon: 'pi pi-fw pi-cog',
         routerLink: ['/dashboard/settings'],
