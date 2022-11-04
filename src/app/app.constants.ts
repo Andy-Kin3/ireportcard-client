@@ -18,6 +18,7 @@ export const RC_SCHOOL_API_URL = `${RC_SERVER_URL}/api/school`;
 export const RC_SECTION_API_URL = `${RC_SERVER_URL}/api/section`;
 export const RC_SEQUENCE_API_URL = `${RC_SERVER_URL}/api/sequence`;
 export const RC_SETTINGS_API_URL = `${RC_SERVER_URL}/api/settings`;
+export const RC_SCHOOL_MANAGER_API_URL = `${RC_SERVER_URL}/api/school-manager`
 export const RC_STUDENT_API_URL = `${RC_SERVER_URL}/api/student`;
 export const RC_STUDENT_APPLICATION_API_URL = `${RC_SERVER_URL}/api/student_application`;
 export const RC_STUDENT_CLASS_LEVEL_API_URL = `${RC_SERVER_URL}/api/student_class_level`;
