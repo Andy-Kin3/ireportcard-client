@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from "../../../../models/dto/user.model";
+import {UserModel} from "../../../../models/dto/user.model";
 import {UserService} from "../../../../services/user.service";
 
 @Component({
@@ -8,7 +8,7 @@ import {UserService} from "../../../../services/user.service";
   styleUrls: ['./admin-admins.component.scss']
 })
 export class AdminAdminsComponent implements OnInit {
-  admins: User[] = [];
+  admins: UserModel[] = [];
 
   constructor(
     private _userService: UserService
