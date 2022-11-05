@@ -7,7 +7,7 @@ import {Subject} from "../../../../../models/dto/subject.model";
 import {SubjectService} from "../../../../../services/subject.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {SubjectTeacher, SubjectTeacherKey} from "../../../../../models/dto/subject-teacher.model";
-import {TeacherPosition} from "../../../../../models/enum/role.enum";
+import {TeacherPosition} from "../../../../../models/enum/teacher-position.enum";
 
 @Component({
   selector: 'app-admin-view-teacher',
@@ -65,7 +65,7 @@ export class AdminViewTeacherComponent implements OnInit {
       const subjectId = this.assignSubjectForm.get('subject')?.value;
       console.log(subjectId)
       const subjectTeacher = new SubjectTeacher(
-        new SubjectTeacherKey(subjectId, this.teacher.id),
+        new SubjectTeacherKey(subjectId, this.teacher.id ?? 0),
         TeacherPosition.STAFF
       );
       this._subjectTeacherService.create(subjectTeacher).subscribe(() => {
