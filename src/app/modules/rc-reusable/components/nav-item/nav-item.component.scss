@@ -1,0 +1,20 @@
+.nav-item {
+  :hover {
+    background-color: rgba(99, 102, 240, 0.84) !important;
+    color: #232323 !important;
+  }
+}
+
+.nav-item-text {
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+.nav-item-active {
+  background-color: rgba(99, 102, 240, 0.84);
+  color: white !important;
+
+  :hover {
+    color: #232323 !important;
+  }
+}

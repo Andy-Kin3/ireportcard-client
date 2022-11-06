@@ -1,0 +1,49 @@
+<div class="surface-section m-2 md:mx-4 md:my-6 lg:m-8">
+  <form [formGroup]="schoolManagerForm" (submit)="setupSchoolManagerAction()">
+    <div class="grid">
+      <div class="col-12 md:col-6">
+        <label class="block text-900 font-medium mb-2" for="fname">First Name</label>
+        <input [formControlName]="'firstName'" class="w-full mb-3" id="fname" pInputText type="text">
+      </div>
+      <div class="col-12 md:col-6">
+        <label class="block text-900 font-medium mb-2" for="lname">Last Name</label>
+        <input [formControlName]="'lastName'" class="w-full mb-3" id="lname" pInputText type="text">
+      </div>
+      <div class="col-12">
+        <label class="block text-900 font-medium mb-2" for="email">Email</label>
+        <input [formControlName]="'email'" class="w-full mb-3" id="email" pInputText type="text">
+      </div>
+      <div class="col-12 md:col-6">
+        <label class="block text-900 font-medium mb-2" for="password">Password</label>
+        <input [formControlName]="'password'" class="w-full mb-3" id="password" pInputText pPassword type="password">
+      </div>
+      <div class="col-12 md:col-6">
+        <label class="block text-900 font-medium mb-2" for="rpassword">Repeat Password</label>
+        <input [formControlName]="'rpassword'" class="w-full mb-3" id="rpassword" pInputText pPassword
+               type="password">
+      </div>
+      <div class="col-12 md:col-6">
+        <label class="block text-900 font-medium mb-2" for="phone">Phone Number</label>
+        <input [formControlName]="'phone'" class="w-full mb-3" id="phone" pInputText type="text">
+      </div>
+      <div class="col-12 md:col-6">
+        <label class="block text-900 font-medium mb-2" for="address">Address</label>
+        <input [formControlName]="'address'" class="w-full mb-3" id="address" pInputText type="text">
+      </div>
+    </div>
+    <!-- divider -->
+    <p-divider></p-divider>
+
+    <div class="grid">
+      <div class="col-12">
+        <label class="block text-900 font-medium mb-2" for="address">Organisation</label>
+        <input [formControlName]="'manager'" class="w-full mb-3" id="manager" pInputText type="text">
+      </div>
+      <div class="col-12">
+        <button [disabled]="!schoolManagerForm.valid" pButton pRipple label="Sign In" icon="pi pi-user" class=""></button>
+      </div>
+    </div>
+
+  </form>
+
+</div>

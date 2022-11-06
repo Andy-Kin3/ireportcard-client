@@ -1,0 +1,108 @@
+<p-card styleClass="p-1 lg:p-2" header="Select school to modify settings">
+  <p-dropdown
+    placeholder="Select school" styleClass="w-25"
+    [options]="schools" [optionLabel]="'name'" [optionValue]="'id'"
+    [(ngModel)]="selectedSchoolId" (ngModelChange)="loadSettings()"></p-dropdown>
+
+  <div *ngIf="selectedSchoolId && selectedSchoolId > 0">
+    <!-- Academic Years -->
+    <p-panel [header]="'Academic Years'" [toggleable]="true" [styleClass]="'py-4'">
+      <div *ngFor="let year of academicYears" class="grid my-2">
+        <div class="col-12 md:col-4 lg:col-5">
+          <input type="number" pInputText placeholder="20XY" class="w-full" [(ngModel)]="year.startYear"
+                 [max]="today.getFullYear()">
+        </div>
+        <div class="col-12 md:col-4 lg:col-5">
+          <input pInputText placeholder="20XY" class="w-full" [value]="year.startYear + 1" [(ngModel)]="year.endYear"
+                 disabled>
+        </div>
+        <div class="col-12 md:col-4 lg:col-2">
+          <p-button (click)="saveYearAction(year)" label="Save" styleClass="w-full"></p-button>
+        </div>
+      </div>
+      <p-divider></p-divider>
+      <div class="my-2 bg-indigo-50 border-round shadow">
+        <form [formGroup]="academicYearForm" (submit)="saveYearAction()">
+          <div class="grid ">
+            <div class="col-12 md:col-4 lg:col-5">
+              <input type="number" pInputText placeholder="20XX" class="w-full" [formControlName]="'startYear'">
+            </div>
+            <div class="col-12 md:col-4 lg:col-5">
+              <input pInputText placeholder="20XY" class="w-full" [value]="academicYearForm.get('startYear')?.value + 1"
+                     [max]="today.getFullYear()" [formControlName]="'endYear'">
+            </div>
+            <div class="col-12 md:col-4 lg:col-2">
+              <button [disabled]="!academicYearForm.valid" pButton label="Add"
+                      class="w-full bg-green-500 border-green-500"></button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </p-panel>
+
+    <!-- Terms -->
+    <p-panel [header]="'Terms'" [toggleable]="true" [styleClass]="'py-4'">
+      <div *ngFor="let term of terms" class="my-2 d-flex">
+        <input pInputText #termUpdateInput [disabled]="true" [value]="term.name" class="w-full">&nbsp;
+        <p-toggleButton [(ngModel)]="termUpdateInput.disabled" [onLabel]="'Edit'" [offLabel]="'Save'"
+                        (click)="editYTSAction(1, term, termUpdateInput)"></p-toggleButton>&nbsp;
+        <button pButton (click)="deleteATSAction(1, term)" icon="pi pi-trash" pTooltip="Delete"
+                class="p-button-danger p-button-rounded"></button>
+      </div>
+      <p-divider></p-divider>
+      <div class="d-flex justify-content-end">
+        <input pInputText #termAddInput [hidden]="true" class="w-full">&nbsp;
+        <p-toggleButton [(ngModel)]="termAddInput.hidden" [onLabel]="'Add'" [offLabel]="'Save'"
+                        (click)="addYTSAction(1, termAddInput)"></p-toggleButton>&nbsp;
+      </div>
+    </p-panel>
+
+    <!-- Seqs -->
+    <p-panel [header]="'Sequences'" [toggleable]="true" [styleClass]="'py-4'">
+      <p-table [value]="sequencesByTerms" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Sequence</th>
+            <th>Type</th>
+            <th>Term</th>
+            <th>Action</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-st>
+          <tr>
+            <td>
+              <input pInputText #seqUpdateInput [disabled]="true" [value]="st.sequence.name" class="w-full">
+            </td>
+            <td>
+              <div class="inline-flex mx-2" *ngFor="let type of sequenceTypes">
+                <p-radioButton [value]="type" [(ngModel)]="st.sequence.type"></p-radioButton>
+                <label class="mx-1">{{type | titlecase}}</label>
+              </div>
+            </td>
+            <td>{{st.term.name}}</td>
+            <td>
+              <p-toggleButton [(ngModel)]="seqUpdateInput.disabled" [onLabel]="'Edit'" [offLabel]="'Save'"
+                              (click)="editYTSAction(2, st.sequence, seqUpdateInput)"></p-toggleButton>&nbsp;
+              <button pButton (click)="deleteATSAction(2, st.sequence)" icon="pi pi-trash"
+                      class="p-button-danger"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <p-divider></p-divider>
+      <div class="d-flex">
+        <form class="mr-auto" [formGroup]="sequenceForm">
+          <input pInputText #seqAddInput [hidden]="true" class="w-full mb-2" [formControlName]="'name'">&nbsp;
+          <p-dropdown [hidden]="seqAddInput.hidden" [options]="terms" [optionLabel]="'name'" [optionValue]="'id'"
+                      [styleClass]="'w-full mb-2'" [formControlName]="'term'"></p-dropdown>
+          <div *ngFor="let type of sequenceTypes" [hidden]="seqAddInput.hidden" class="inline-flex mx-2">
+            <input name="type" [value]="type" type="radio" class="p-radiobutton" [formControlName]="'type'">&nbsp;
+            <label>{{type | titlecase}}</label>
+          </div>
+        </form>
+        <p-toggleButton (click)="addYTSAction(2, seqAddInput)" [(ngModel)]="seqAddInput.hidden" [onLabel]="'Add'"
+                        [offLabel]="'Save'"></p-toggleButton>&nbsp;
+      </div>
+    </p-panel>
+  </div>
+</p-card>
