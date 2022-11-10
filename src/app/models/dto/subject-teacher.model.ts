@@ -1,4 +1,4 @@
-import {TeacherPosition} from "../enum/role.enum";
+import {TeacherPosition} from "../enum/teacher-position.enum";
 
 export class SubjectTeacher {
   constructor(

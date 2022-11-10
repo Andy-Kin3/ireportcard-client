@@ -2,7 +2,7 @@ import {VersionedModel} from "../base/versioned.model";
 import {ClassLevelSub} from "./class-level-sub.model";
 
 export interface ClassLevel {
-  id: number;
+  id?: number;
   name: string;
   order?: number;
   sectionId: number;
