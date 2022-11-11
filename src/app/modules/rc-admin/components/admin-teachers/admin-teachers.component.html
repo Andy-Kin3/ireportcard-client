@@ -3,7 +3,7 @@
     <p-toolbar styleClass="mb-4">
       <ng-template pTemplate="left">
         <p-dropdown [optionLabel]="'name'" [optionValue]="'id'" [options]="schools"
-                    (onChange)="loadTeachers(schoolId)" [(ngModel)]="schoolId" placeholder="Select School"></p-dropdown>
+                    (onChange)="loadTeachers({schoolId: schoolId})" [(ngModel)]="schoolId" placeholder="Select School"></p-dropdown>
       </ng-template>
       <ng-template pTemplate="right">
         <p-button [routerLink]="['/admin/teachers/add']" label="Add Teacher"></p-button>
