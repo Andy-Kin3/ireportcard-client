@@ -81,6 +81,23 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  private writeSchool(): void {
+    this._userService.loadUserFromSessionWithCallbacks([(userComplete: UserComplete) => {
+      const schoolId = (userComplete.account as Teacher | Student).schoolId;
+      LocalStorageUtil.writeSchoolId(schoolId);
+    }]);
+  }
+
+  private writeSchoolManager(): void {
+    this._userService.loadUserFromSessionWithCallbacks([(userComplete: UserComplete) => {
+      const admin = userComplete.account as Admin;
+      LocalStorageUtil.writeSchoolManager({
+        id: admin.schoolManagerId,
+        smId: admin.schoolManagerSmId
+      });
+    }]);
+  }
+
   private checkIfLoggedIn() {
     const token = LocalStorageUtil.readUserToken();
     if (token) {
