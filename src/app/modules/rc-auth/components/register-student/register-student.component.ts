@@ -60,7 +60,7 @@ export class RegisterStudentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadSchools();
+    this.loadSchools(); // TODO restrict student reg to one school
   }
 
   loadSchools = () => {
