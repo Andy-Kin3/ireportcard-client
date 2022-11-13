@@ -5,10 +5,10 @@ import {School} from "../../../../models/dto/school.model";
 import {SchoolService} from "../../../../services/school.service";
 import {DateUtil} from "../../../../utils/date.util";
 import {Student, StudentInfo} from "../../../../models/dto/student.model";
-import {User} from "../../../../models/dto/user.model";
+import {User, UserModel} from "../../../../models/dto/user.model";
 import {Role} from "../../../../models/enum/role.enum";
 import {AuthService} from "../../../../services/auth.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-register-student',
@@ -16,20 +16,32 @@ import {Router} from "@angular/router";
   styleUrls: ['./register-student.component.scss']
 })
 export class RegisterStudentComponent implements OnInit {
+  schoolManagerSmId: string = "";
   studentForm: FormGroup;
   genders: string[] = Object.keys(Gender);
   schools: School[] = [];
   maximumDate: Date;
 
   constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private schoolService: SchoolService,
-    private authService: AuthService,
+    private _fb: FormBuilder,
+    private _router: Router,
+    private _activatedRoute: ActivatedRoute,
+    private _schoolService: SchoolService,
+    private _authService: AuthService,
   ) {
+    const schoolManagerSmId = this._activatedRoute.snapshot.params['smId'];
+    if (schoolManagerSmId) {
+      this.schoolManagerSmId = schoolManagerSmId
+    } else {
+      this._router.navigate(['/']).then();
+    }
     this.maximumDate = new Date(Date.UTC(new Date().getUTCFullYear() - 1, 0));
+    this.studentForm = this.buildStudentForm();
+  }
+
+  private buildStudentForm = (): FormGroup => {
     const suggestedDate: Date = new Date(Date.UTC(new Date().getUTCFullYear() - 12, 0, 1));
-    this.studentForm = this.fb.group({
+    return this._fb.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
       firstname: ['', Validators.required],
@@ -51,16 +63,26 @@ export class RegisterStudentComponent implements OnInit {
     this.loadSchools();
   }
 
-  loadSchools = () => this.schoolService.getAll().subscribe((schools) => this.schools = schools);
+  loadSchools = () => {
+    this._schoolService.getAllBySchoolManagerSmId((this.schoolManagerSmId)).subscribe((schools) => {
+      this.schools = schools
+    });
+  }
 
   registerStudentAction() {
     console.log(this.studentForm.value);
 
-    const user: User = new User(
-      -1, this.studentForm.get('email')?.value, '',
-      this.studentForm.get('firstname')?.value, this.studentForm.get('lastname')?.value,
-      this.studentForm.get('phone')?.value, this.studentForm.get('address')?.value, false, Role.STUDENT
-    );
+    const user: UserModel = {
+      email: this.studentForm.get('email')?.value,
+      username: this.studentForm.get('email')?.value,
+      firstName: this.studentForm.get('firstname')?.value,
+      lastName: this.studentForm.get('lastname')?.value,
+      phone: this.studentForm.get('phone')?.value,
+      address: this.studentForm.get('address')?.value,
+      approved: false,
+      role: Role.STUDENT
+    }
+
     const info: StudentInfo = {
       fatherName: this.studentForm.get('fatherName')?.value,
       fatherPhone: this.studentForm.get('fatherPhone')?.value,
@@ -78,8 +100,8 @@ export class RegisterStudentComponent implements OnInit {
       info: info, user: user
     }
     const password = this.studentForm.get('password')?.value;
-    this.authService.registerStudent(student, password).subscribe(() => {
-      this.router.navigate(['/auth/login']).then();
+    this._authService.registerStudent(student, password).subscribe(() => {
+      this._router.navigate(['/auth/login']).then();
     });
   }
 }
