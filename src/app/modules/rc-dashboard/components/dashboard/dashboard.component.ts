@@ -62,53 +62,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         icon: 'pi pi-fw pi-power-off',
       }
     ];
-    this.dashboardMenuItems = [
-      {
-        label: 'Home',
-        icon: 'pi pi-fw pi-home',
-        routerLink: ['/dashboard'],
-        routerLinkActiveOptions: {exact: true},
-      },
-      {
-        label: 'Subjects',
-        icon: 'pi pi-fw pi-book',
-        routerLink: ['/dashboard/subject'],
-        routerLinkActiveOptions: {exact: true},
-      },
-      {
-        label: 'Classes',
-        icon: 'pi pi-fw pi-list',
-        routerLink: ['/dashboard/class'],
-        routerLinkActiveOptions: {exact: true},
-      },
-      {
-        label: 'Students',
-        icon: 'pi pi-fw pi-users',
-        routerLink: ['/dashboard/student'],
-        routerLinkActiveOptions: {exact: true},
-        items: [
-          {
-            label: 'Add',
-            icon: 'pi pi-fw pi-plus',
-            routerLink: ['/dashboard/student/add'],
-            routerLinkActiveOptions: {exact: true},
-          },
-        ]
-      },
-      {
-        label: 'Applications',
-        icon: 'pi pi-fw pi-plus-circle',
-        routerLink: ['/dashboard/application'],
-        routerLinkActiveOptions: {exact: true},
-      },
-      {
-        label: 'Settings',
-        icon: 'pi pi-fw pi-cog',
-        routerLink: ['/dashboard/settings'],
-        routerLinkActiveOptions: {exact: true},
-      }
-
-    ];
+    this.dashboardMenuItems = SIDEBAR_DASHBOARD_MENU_ITEMS
     this.loadUser();
   }
 
