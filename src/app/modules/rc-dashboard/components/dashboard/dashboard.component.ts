@@ -8,32 +8,33 @@ import {School} from "../../../../models/dto/school.model";
 import {Role} from "../../../../models/enum/role.enum";
 import {SchoolService} from "../../../../services/school.service";
 import {Observable} from "rxjs";
+import {NO_ENTITY_ID} from "../../../../models/base/base.model";
+import {Admin} from "../../../../models/dto/admin.model";
+import {NavItem, SIDEBAR_DASHBOARD_MENU_ITEMS} from "../../../../models/ui/nav-item";
 
 @Component({
   selector: 'app-dashboard',
   styleUrls: ['./dashboard.component.scss'],
   template: `
-    <header class="z-1 w-full fixed top-0">
-      <p-toast></p-toast>
-      <app-top-menu [menuItems]="dashboardMenuItems"></app-top-menu>
-    </header>
-    <main class="z-0 h-full min-h-screen py-8">
-      <div class="dashboard-container row no-gutters dashbody-container">
-        <div class="dash-body container-fluid dash-body-content">
-          <router-outlet></router-outlet>
+    <p-toast></p-toast>
+    <div class="min-h-screen flex surface-ground {{showSchoolsDialog ? 'backdrop-blur' : ''}}">
+      <app-sidebar [navItems]="dashboardMenuItems"></app-sidebar>
+      <div class="min-h-screen flex flex-column relative flex-auto">
+        <app-top-menu></app-top-menu>
+
+        <div class="flex flex-column flex-auto">
+          <div class="p-5">
+            <router-outlet></router-outlet>
+          </div>
         </div>
       </div>
-
-      <p-dialog [visible]="showSchoolsDialog" [modal]="true" [header]="'Select School'">
-        <ng-template pTemplate="content">
-          <rc-app-select-school
-            [schools]="schools" (onSchoolSelect)="onSchoolSelectAction($event)"></rc-app-select-school>
-        </ng-template>
-      </p-dialog>
-    </main>
-    <footer class="z-1">
-      <app-footer></app-footer>
-    </footer>
+    </div>
+    <p-dialog [visible]="showSchoolsDialog" [modal]="true" [header]="'Select School'">
+      <ng-template pTemplate="content">
+        <rc-app-select-school
+          [schools]="schools" (onSchoolSelect)="onSchoolSelectAction($event)"></rc-app-select-school>
+      </ng-template>
+    </p-dialog>
   `
 })
 export class DashboardComponent implements OnInit, OnDestroy {
@@ -41,7 +42,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   user?: UserComplete;
   schools: School[] = [];
   menuItems: MenuItem[] = [];
-  dashboardMenuItems: MenuItem[] = [];
+  dashboardMenuItems: NavItem[] = [];
 
   constructor(
     private _userService: UserService,
@@ -52,7 +53,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     LocalStorageUtil.deleteSchoolId();
   }
-
 
   ngOnInit(): void {
     this.menuItems = [
@@ -113,14 +113,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   loadUser = () => this._userService.getCompleteFromSession().subscribe((u) => {
-    if (u.user.role.toLowerCase() == Role.TEACHER.toLowerCase()) {
+    if (u.user.role?.toLowerCase() == Role.TEACHER.toLowerCase()) {
       LocalStorageUtil.writeSchoolId((u.account as Teacher).schoolId);
       this.showSchoolsDialog = false;
     } else {
-      if (u.user.role.toLowerCase() == Role.ADMIN.toLowerCase()) {
-        this._schoolService.getAllByOwner(u.user.id).subscribe(schools => this.schools = schools);
+      if (u.user.role?.toLowerCase() == Role.ADMIN.toLowerCase()) {
+        this._schoolService.getAllByOwner(u.user.id ?? NO_ENTITY_ID).subscribe((schools) => {
+          this.schools = schools
+        });
       } else {
-        this._schoolService.getAll().subscribe(schools => this.schools = schools);
+        this._schoolService.getAllBySchoolManagerId((u.account as Admin).schoolManagerId).subscribe((schools) =>{
+          this.schools = schools
+        });
       }
     }
   });
