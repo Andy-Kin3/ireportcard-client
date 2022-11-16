@@ -8,8 +8,11 @@ import {Subject} from "../../../../models/dto/subject.model";
 import {Sequence} from "../../../../models/dto/sequence.model";
 import {ClassLevelSubService} from "../../../../services/class-level-sub.service";
 import {SectionService} from "../../../../services/section.service";
-import {LocalStorageUtil} from "../../../../utils/local-storage.util";
+import {LocalStorageUtil, SCHOOL_ID_LOCAL} from "../../../../utils/local-storage.util";
 import {StudentClassLevel} from "../../../../app.types";
+import {NO_ENTITY_ID} from "../../../../models/base/base.model";
+import {StudentClassLevelService} from "../../../../services/student-class-level.service";
+import {SchoolBaseServiceStrategy} from "../../../../services/strategy/service.strategy";
 
 @Component({
   selector: 'app-rc-classlists',
@@ -30,29 +33,24 @@ export class RcClassListsComponent implements OnInit {
     private _classLevelService: ClassLevelService,
     private _academicYearService: AcademicYearService,
     private _classLevelSubService: ClassLevelSubService,
+    private _studentClassLevelService: StudentClassLevelService,
   ) {
   }
 
   ngOnInit(): void {
-
     this.loadClasses();
     this._academicYearService.getAll().subscribe(years => this.academicYears = years);
     this._subjectService.getAll().subscribe((subjects) => this.subjects = subjects);
-    this._sequenceService.getAll().subscribe((sequences) => this.sequences = sequences);
+    this._sequenceService.getAllBySchoolId(SCHOOL_ID_LOCAL).subscribe((sequences) => this.sequences = sequences);
   }
 
-  loadClasses() {
+  loadClasses() { // TODO identify all bulk methods like this and clean
     if (this.schoolId) {
-      this._sectionService.getAllBySchoolId(this.schoolId).subscribe((sections) => {
-        sections.forEach((section) => this._classLevelService.getBySection(section.id).subscribe((classLevels) => {
-          classLevels.forEach((cl) => this._classLevelSubService.getAllByClassLevelId(cl.id).subscribe((classLevelSubs) => {
-            classLevelSubs.forEach((cls) => this.classes.push({
-              id: cl.id, subId: cls.id, classLevel: cl, classLevelSub: cls, name: `${cl.name} ${cls.name}`
-            }));
-            this.classes.sort((a, b) => a.name < b.name ? -1 : 1);
-          }));
-        }));
-      });
+      this._studentClassLevelService.loadStudentClassLevels(
+        this.classes, SchoolBaseServiceStrategy.BY_SCHOOL,
+        {schoolId: SCHOOL_ID_LOCAL},
+        [(classLevels: StudentClassLevel[]) => this.classes = classLevels]
+      );
     }
   }
 }
