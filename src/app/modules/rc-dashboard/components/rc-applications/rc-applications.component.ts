@@ -8,6 +8,10 @@ import {StudentApplicationService} from "../../../../services/student-applicatio
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {SAT, StudentClassLevel} from "../../../../app.types";
 import {LocalStorageUtil} from "../../../../utils/local-storage.util";
+import {NO_ENTITY_ID} from "../../../../models/base/base.model";
+import {AcademicYearServiceStrategy, SchoolBaseServiceStrategy} from "../../../../services/strategy/service.strategy";
+import {StudentClassLevelService} from "../../../../services/student-class-level.service";
+import {EntityUtil} from "../../../../utils/message.util";
 
 
 @Component({
@@ -16,13 +20,13 @@ import {LocalStorageUtil} from "../../../../utils/local-storage.util";
   styleUrls: ['./rc-applications.component.scss']
 })
 export class RcApplicationsComponent implements OnInit {
-  schoolId = LocalStorageUtil.readSchoolId();
+  schoolId = LocalStorageUtil.readSchoolId() ?? NO_ENTITY_ID;
   applicationsQueried: boolean = false;
 
   studentApplicationTrials: StudentApplicationTrial[] = [];
 
   studentATs: SAT[] = [];
-  applicationsRequest: ApplicationsRequest;
+  request: ApplicationsRequest;
 
   academicYears: AcademicYear[] = [];
   classes: StudentClassLevel[] = []
@@ -32,9 +36,10 @@ export class RcApplicationsComponent implements OnInit {
     private classService: ClassLevelService,
     private classSubService: ClassLevelSubService,
     private academicYearService: AcademicYearService,
+    private _studentClassLevelService: StudentClassLevelService,
     private studentApplicationService: StudentApplicationService
   ) {
-    this.applicationsRequest = {yearId: -1, classSubId: -1}
+    this.request = {yearId: -1, classSubId: -1}
   }
 
   ngOnInit(): void {
@@ -51,42 +56,45 @@ export class RcApplicationsComponent implements OnInit {
   }
 
   loadAcademicYears() {
-    this.academicYearService.getAll().subscribe((years) => {
-      this.academicYears = years;
-      if (years.length > 0) this.applicationsRequest.yearId = years[0].id
-    });
+    this.academicYearService.loadAcademicYears(
+      this.academicYears,
+      AcademicYearServiceStrategy.BY_SCHOOL,
+      {schoolId: this.schoolId},
+      [(yearsRes: AcademicYear[]) => {
+        if (yearsRes.length > 0) this.request.yearId = yearsRes[0].id ?? NO_ENTITY_ID;
+        this.academicYears = yearsRes
+      }]
+    )
   }
 
   loadClasses() {
-    if (this.schoolId) {
-      this.classService.getBySchool(this.schoolId).subscribe((classes) => {
-        classes.forEach(c => this.classSubService.getAllByClassLevelId(c.id).subscribe((classSubs) => {
-          classSubs.forEach((cs) => {
-            this.classes.push({
-              id: c.id, subId: cs.id, name: `${c.name} ${cs.name}`, classLevel: c, classLevelSub: cs
-            });
-          });
-          if (this.classes.length > 0) this.applicationsRequest.classSubId = this.classes[0].subId
-        }));
-      });
+    if (EntityUtil.isValidId(this.schoolId)) {
+      this._studentClassLevelService.loadStudentClassLevels(
+        this.classes, SchoolBaseServiceStrategy.BY_SCHOOL, {schoolId: this.schoolId},
+        [(sclRes: StudentClassLevel[]) => {
+          this.classes = sclRes;
+          if (sclRes.length > 0) this.request.classSubId = sclRes[0].subId;
+        }]
+      );
     }
   }
 
   loadApplications() {
     this.studentATs = [];
-    console.log(this.applicationsRequest);
-    if (this.applicationsRequest.yearId > 0) {
-      const classId: number = this.applicationsRequest.classSubId;
-      const yearId: number = this.applicationsRequest.yearId;
-      this.studentApplicationService.getTrialByClassAndYear(classId, yearId).subscribe({
+    if (EntityUtil.areValidIds([this.request.yearId, this.request.classSubId])) {
+      const classSubId: number = this.request.classSubId;
+      const academicYearId: number = this.request.yearId;
+      this.studentApplicationService.getAllByClassSubIdAndAcademicYearId(academicYearId, classSubId).subscribe({
         next: (response) => {
-          this.studentApplicationTrials = response;
-          response.forEach((sat) => {
-            this.studentApplicationService.get(sat.applicationKey).subscribe((sa) => {
-              this.academicYearService.getById(sat.academicYearId).subscribe(academicYear => {
-                this.studentATs.push({student: sa.student, sat: sat, sa: sa, year: academicYear})
-              })
-            })
+          response.forEach((satResponse) => {
+            this.academicYearService.getById(academicYearId).subscribe(academicYear => {
+              this.studentATs.push({
+                student: satResponse.student,
+                sa: satResponse.application,
+                sat: satResponse.applicationTrials[0],
+                year: academicYear
+              });
+            });
           });
         },
         complete: () => this.applicationsQueried = true
