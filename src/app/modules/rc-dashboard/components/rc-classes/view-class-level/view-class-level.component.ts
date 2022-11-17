@@ -9,6 +9,9 @@ import {Section} from "../../../../../models/dto/section.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subject} from "../../../../../models/dto/subject.model";
 import {SubjectService} from "../../../../../services/subject.service";
+import {NO_ENTITY_ID} from "../../../../../models/base/base.model";
+import {SubjectServiceStrategy} from "../../../../../services/strategy/service.strategy";
+import {LocalStorageUtil} from "../../../../../utils/local-storage.util";
 
 @Component({
   selector: 'app-class',
@@ -16,6 +19,7 @@ import {SubjectService} from "../../../../../services/subject.service";
   styleUrls: ['./view-class-level.component.scss']
 })
 export class ViewClassLevelComponent implements OnInit {
+  readonly schoolId = LocalStorageUtil.readSchoolId() ?? NO_ENTITY_ID;
   classForm: FormGroup;
   msFormControl: FormControl;
   classLevel: ClassLevel = {id: -1, name: '', order: 0, sectionId: -1};
@@ -29,11 +33,12 @@ export class ViewClassLevelComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
+    private sectionService: SectionService,
     private _subjectService: SubjectService,
-    private classLevelService: ClassLevelService, private sectionService: SectionService,
-    private classLevelSubService: ClassLevelSubService
+    private _classLevelService: ClassLevelService,
+    private _classLevelSubService: ClassLevelSubService
   ) {
-    this.section = {id: -1, name: '', category: '', schoolId: -1}
+    this.section = {id: -1, name: '', schoolId: -1}
     this.classForm = this.fb.group({
       name: ['', Validators.required],
       classLevels: this.fb.array([])
@@ -47,22 +52,28 @@ export class ViewClassLevelComponent implements OnInit {
 
   ngOnInit(): void {
     const classId = this.activatedRoute.snapshot.params['id'];
-    this.classLevelService.getById(classId).subscribe({
+    this.loadClassLevel(classId);
+  }
+
+  loadClassLevel(classLevelId: number) {
+    this._classLevelService.getById(classLevelId).subscribe({
       next: (classLevel) => {
         this.classLevel = classLevel;
         this.loadSection(classLevel.sectionId);
-        this.loadClassLevelSubs(classLevel.id);
-        this.loadSubjects(classLevel.id);
+        this.loadClassLevelSubs(classLevel.id!!);
+        this.loadSubjects(classLevel.id!!);
       },
       error: () => this.router.navigate(['/dashboard/class']).then()
     });
   }
 
   loadClassLevelSubs(classLevelId: number) {
-    this.classLevelSubService.getAllByClassLevelId(classLevelId).subscribe((cls) => {
+    this._classLevelSubService.getAllByClassLevelId(classLevelId).subscribe((cls) => {
       this.classLevelSubs = cls;
       (this.classForm.get('classLevels') as FormArray).controls = [];
-      cls.forEach((classLevelSub) => this.setClassLevelSubForm(classLevelSub.id, classLevelSub.name));
+      cls.forEach((classLevelSub) => {
+        this.setClassLevelSubForm(classLevelSub.id ?? NO_ENTITY_ID, classLevelSub.name)
+      });
     });
   }
 
@@ -71,12 +82,12 @@ export class ViewClassLevelComponent implements OnInit {
   }
 
   loadSubjects(classLevelId: number) {
-    this.classLevelService.getSubjects(classLevelId).subscribe((mSubjects) => {
+    this._classLevelService.getSubjects(classLevelId).subscribe((mSubjects) => {
       this.mandatorySubjects = mSubjects.map((s): { subject: Subject, added: boolean } => {
         return {subject: s, added: true}
       });
-      console.log(this.mandatorySubjects)
-      this._subjectService.getAll().subscribe(subjects => {
+
+      this._subjectService.getAllBySchoolId(this.schoolId).subscribe(subjects => {
         this.nonMandatorySubjects = [];
         subjects.forEach(nmSubject => this.addToNonMandatorySubjects(nmSubject));
       });
@@ -91,15 +102,28 @@ export class ViewClassLevelComponent implements OnInit {
     this.classLevelSubForms.push(this.fb.group({id: [id], name: [name, Validators.required]}))
   }
 
+  saveClassLevel() {
+    this.classLevel.name = this.classForm.get('name')?.value;
+    this._classLevelService.update(this.classLevel).subscribe(() => {
+      this.loadClassLevel(this.classLevel.id ?? NO_ENTITY_ID);
+    })
+  }
+
   saveClassLevelSub(formId: number) {
     const clsForm = this.classLevelSubForms.controls[formId];
     const classLevelSub: ClassLevelSub = {
-      id: clsForm.get('id')?.value, name: clsForm.get('name')?.value, classLevelId: this.classLevel.id
+      id: clsForm.get('id')?.value,
+      name: clsForm.get('name')?.value,
+      classLevelId: this.classLevel.id!!
     }
-    if (classLevelSub.id < 0) {
-      this.classLevelSubService.save(classLevelSub).subscribe(() => this.loadClassLevelSubs(this.classLevel.id));
+    if (!classLevelSub.id || classLevelSub.id < 0) {
+      this._classLevelSubService.save(classLevelSub).subscribe(
+        () => this.loadClassLevelSubs(this.classLevel.id!!)
+      );
     } else {
-      this.classLevelSubService.update(classLevelSub).subscribe(() => this.loadClassLevelSubs(this.classLevel.id));
+      this._classLevelSubService.update(classLevelSub).subscribe(
+        () => this.loadClassLevelSubs(this.classLevel.id!!)
+      );
     }
   }
 
@@ -116,8 +140,10 @@ export class ViewClassLevelComponent implements OnInit {
   }
 
   saveMandatorySubjectAction() {
-    const id: number = this.classLevel.id;
-    const subjectIds: number[] = this.mandatorySubjects.filter(ms => !ms.added).map(ms => ms.subject.id);
-    this.classLevelService.updateSubjects(id, subjectIds).subscribe(() => this.loadSubjects(id));
+    const id: number = this.classLevel.id!!;
+    const subjectIds = this.mandatorySubjects.filter(ms => !ms.added).map(ms => ms.subject.id ?? NO_ENTITY_ID)
+    this._classLevelService.updateSubjects(id, subjectIds).subscribe(
+      () => this.loadSubjects(id)
+    );
   }
 }
