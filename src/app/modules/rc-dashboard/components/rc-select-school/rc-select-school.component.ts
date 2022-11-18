@@ -26,7 +26,7 @@ export class RcSelectSchoolComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.schools.length == 1) {
-      this.schoolId = this.schools[0].id;
+      this.schoolId = this.schools[0].id!!;
       this.setSchoolAction();
     }
   }
