@@ -1,10 +1,26 @@
+import {VersionedModel} from "../base/versioned.model";
+
 export interface School {
-  id: number,
+  id?: number,
   name: string,
+  maxGrade: number,
+  applicationOpen: boolean,
+  schoolManagerId: number,
   currentYearId?: number,
   currentTerm?: string,
   currentSequenceId?: number,
-  maxGrade: number,
-  applicationOpen: boolean,
-  ownerId: number
+}
+
+export class School extends VersionedModel{
+  constructor(
+    public name: string,
+    public maxGrade: number,
+    public applicationOpen: boolean,
+    public schoolManagerId: number,
+    public currentYearId?: number,
+    public currentTerm?: string,
+    public currentSequenceId?: number,
+  ) {
+    super();
+  }
 }

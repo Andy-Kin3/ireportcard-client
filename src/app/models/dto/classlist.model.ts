@@ -5,7 +5,12 @@ import {Student} from "./student.model";
 import {ClassLevel} from "./class-level.model";
 
 export class ClassListRequest {
-  constructor(public yearId: number, public classId: number, public subjectId: number, public sequenceId: number) {
+  constructor(
+    public yearId: number,
+    public classId: number,
+    public subjectId: number,
+    public sequenceId: number
+  ) {
   }
 
   isValid = () => {

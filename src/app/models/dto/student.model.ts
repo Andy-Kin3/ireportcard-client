@@ -1,11 +1,10 @@
 import {Gender} from "../enum/gender.enum";
 import {User} from "./user.model";
+import {BaseModel} from "../base/base.model";
 
-export class Student {
-  public name: string = '';
-
+export class Student extends BaseModel {
   constructor(
-    public id: number,
+    public name: string,
     public regNum: string,
     public gender: Gender,
     public dob: string,
@@ -14,6 +13,7 @@ export class Student {
     public info: StudentInfo,
     public user: User
   ) {
+    super();
     this.name = `${this.user.firstName} ${this.user.lastName}`
   }
 }

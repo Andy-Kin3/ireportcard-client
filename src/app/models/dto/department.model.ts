@@ -1,10 +1,10 @@
 import {BaseModel} from "../base/base.model";
 
-export class PaymentSetting extends BaseModel{
+export class Department extends BaseModel {
   constructor(
-    public tuitionFee: number,
-    public applicationFee: number,
+    public name: string,
     public schoolId: number,
+    public hodId?: number,
   ) {
     super();
   }

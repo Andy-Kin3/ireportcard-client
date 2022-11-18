@@ -3,6 +3,13 @@ export interface AcademicYear {
   name: string;
   startYear: number;
   endYear: number;
-  startDate?: string;
-  numberOfTerms?: number;
+  academicInfo: AcademicInfo
+}
+
+export class AcademicInfo {
+  constructor(
+    public startDate: string,
+    public endDate: string,
+  ) {
+  }
 }

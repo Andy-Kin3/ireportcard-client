@@ -1,10 +1,11 @@
 import {User} from "./user.model";
+import {VersionedModel} from "../base/versioned.model";
 
-export class Teacher {
+export class Teacher extends VersionedModel {
   constructor(
-    public id: number,
     public schoolId: number,
     public user: User
   ) {
+    super();
   }
 }

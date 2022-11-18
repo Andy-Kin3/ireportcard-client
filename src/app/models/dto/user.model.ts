@@ -1,10 +1,10 @@
 import {Role} from "../enum/role.enum";
 import {Teacher} from "./teacher.model";
 import {Student} from "./student.model";
+import {BaseModel} from "../base/base.model";
 
-export class User {
+export class User extends BaseModel{
   constructor(
-    public id: number,
     public email: string,
     public username: string,
     public firstName: string,
@@ -14,6 +14,7 @@ export class User {
     public approved: boolean,
     public role: Role
   ) {
+    super();
   }
 }
 
