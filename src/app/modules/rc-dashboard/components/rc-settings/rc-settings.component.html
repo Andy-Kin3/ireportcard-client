@@ -73,29 +73,6 @@
     </form>
   </div>
 
-  <p-panel [header]="'School Sections'" [toggleable]="true" [styleClass]="'py-4'">
-    <div class="">
-      <div *ngFor="let section of sections" class=" my-2 d-flex">
-        <input pInputText #sectionUpdateInput [disabled]="true" [(ngModel)]="section.name" class="w-full">&nbsp;
-        <p-toggleButton [(ngModel)]="sectionUpdateInput.disabled" [onLabel]="'Edit'"
-                        [offLabel]="'Save'" (click)="saveSection(section, sectionUpdateInput.disabled)">
-        </p-toggleButton>&nbsp;
-        <button pButton label="Delete" class="p-button-danger" (click)="deleteSection(section)"></button>
-      </div>
-    </div>
-    <p-divider></p-divider>
-    <div class="">
-      <div class="d-flex">
-        <div class="mr-auto">
-          <input pInputText #sectionInput [hidden]="true">&nbsp;
-        </div>
-        <div class="ml-auto">
-          <p-toggleButton [(ngModel)]="sectionInput.hidden" [onLabel]="'Add'"
-                          [offLabel]="sectionInput.value.length == 0? 'Cancel': 'Save'"
-                          (click)="saveSection(sectionInput, sectionInput.hidden)">
-          </p-toggleButton>
-        </div>
-      </div>
-    </div>
-  </p-panel>
+  <app-section [school]="school"></app-section>
+  <app-department-settings [school]="school"></app-department-settings>
 </div>
