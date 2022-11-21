@@ -16,6 +16,7 @@ import {Term} from "../../../../models/dto/term.model";
 import {TermService} from "../../../../services/term.service";
 import {ReportCardService} from "../../../../services/report-card.service";
 import {RcSubjectRegistered} from "../../../../app.types";
+import {SCHOOL_ID_LOCAL} from "../../../../utils/local-storage.util";
 
 @Component({
   selector: 'app-view-application',
@@ -56,7 +57,7 @@ export class ViewApplicationComponent implements OnInit {
   }
 
   loadData = () => {
-    this.termService.getAll().subscribe((terms) => this.terms = terms);
+    this.termService.getAllBySchoolId(SCHOOL_ID_LOCAL).subscribe((terms) => this.terms = terms);
     this.subjectService.getAll().subscribe((subjects) => this.subjects = subjects);
   }
 
@@ -87,7 +88,7 @@ export class ViewApplicationComponent implements OnInit {
   }
 
   unregisterSubjectAction(subject: RcSubjectRegistered) {
-    this._subjectRegistrationService.delete(subject.registration.id).subscribe(() => this.loadRegisteredSubjects(subject.registration.satId));
+    this._subjectRegistrationService.delete(subject.registration.id!!).subscribe(() => this.loadRegisteredSubjects(subject.registration.satId));
   }
 
   addSubjectToRegisterAction(subjectDropDown: Dropdown) {
@@ -111,7 +112,7 @@ export class ViewApplicationComponent implements OnInit {
       const subjectRegs: SubjectRegistration[] = [];
       const satId = this.studentApplicationTrial.id;
       this.subjectsToRegister.forEach(s => subjectRegs.push({
-        subjectId: s.id, satId: satId, id: 0
+        subjectId: s.id!!, satId: satId, id: 0
       }));
       this._subjectRegistrationService.saveMultiple(subjectRegs).subscribe(() => {
         this.loadRegisteredSubjects(satId);
