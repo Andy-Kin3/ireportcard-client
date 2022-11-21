@@ -36,7 +36,7 @@
     </div>
 
     <div class="surface-section">
-      <p-table [value]="classListResponse.studentGrades" [rows]="25" [paginator]="true" responsiveLayout="scroll"
+      <p-table [value]="classListResponse?.studentGrades ?? []" [rows]="25" [paginator]="true" responsiveLayout="scroll"
                styleClass="p-datatable-striped">
         <ng-template pTemplate="header">
           <tr>
