@@ -31,7 +31,7 @@ export class StudentApplicationsComponent implements OnInit {
     this.userComplete = user;
     const student = user.account as Student;
     console.log(student.schoolId)
-    this.loadStudentApplications(student.id);
+    this.loadStudentApplications(student.id!!);
   });
 
   loadStudentApplications = (studentId: number) => {

@@ -8,6 +8,7 @@ import {Student} from "../../../../models/dto/student.model";
 import {StudentClassLevel} from "../../../../app.types";
 import {StudentClassLevelService} from "../../../../services/student-class-level.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {NO_ENTITY_ID} from "../../../../models/base/base.model";
 
 @Component({
   selector: 'app-student-home',
@@ -40,7 +41,7 @@ export class StudentHomeComponent implements OnInit {
   loadUserComplete = () => this._userService.getCompleteFromSession().subscribe(u => {
     this.student = u;
     this.loadClassLevels((u.account as Student).schoolId);
-    this.loadCurrentStudentApplicationTrial((u.account as Student).id);
+    this.loadCurrentStudentApplicationTrial((u.account as Student).id ?? NO_ENTITY_ID);
   });
 
   loadClassLevels = (schoolId: number) => this._studentClassLevelService.getAllBySchool(schoolId).subscribe((res) => {
@@ -63,9 +64,9 @@ export class StudentHomeComponent implements OnInit {
     if (this.student) {
       const classSubId: number = this.selectClassLevelForm.get('classLevel')?.value
       const applicationRequest: ApplicationRequest = {
-        studentId: (this.student.account as Student).id,
+        studentId: (this.student.account as Student).id ?? NO_ENTITY_ID,
         classSubId: classSubId,
-        yearId: -1 // setting this so the current academic year is used instead
+        academicYearId: -1 // setting this so the current academic year is used instead
       }
       this._studentApplicationService.save(applicationRequest).subscribe(() => this.loadUserComplete());
     }

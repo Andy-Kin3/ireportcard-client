@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {User} from "../../../../models/dto/user.model";
+import {UserModel} from "../../../../models/dto/user.model";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../../services/user.service";
 
@@ -9,7 +9,7 @@ import {UserService} from "../../../../services/user.service";
   styleUrls: ['./user-details.component.scss']
 })
 export class UserDetailsComponent implements OnInit {
-  @Input() user?: User;
+  @Input() user?: UserModel;
   @Output() onUserSaved = new EventEmitter<boolean>();
   userForm: FormGroup = this._fb.group({});
 
@@ -23,7 +23,7 @@ export class UserDetailsComponent implements OnInit {
     if (this.user) this.setupAdminForm(this.user);
   }
 
-  setupAdminForm = (user: User) => {
+  setupAdminForm = (user: UserModel) => {
     this.userForm = this._fb.group({
       email: [user.email, Validators.required],
       username: [{value: user.username, disabled: true}, Validators.required],
@@ -36,7 +36,7 @@ export class UserDetailsComponent implements OnInit {
 
   saveUserAction() {
     if (this.user) {
-      const user: User = {
+      const user: UserModel = {
         id: this.user.id, email: this.userForm.get('email')?.value, username: this.user.username,
         firstName: this.userForm.get('firstname')?.value, lastName: this.userForm.get('lastname')?.value,
         phone: this.userForm.get('phone')?.value, address: this.userForm.get('address')?.value,
