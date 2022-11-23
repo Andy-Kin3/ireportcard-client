@@ -11,6 +11,10 @@ import {SubjectTeacherService} from "../../../../services/subject-teacher.servic
 import {UserService} from "../../../../services/user.service";
 import {Teacher} from "../../../../models/dto/teacher.model";
 import {StudentClassLevel} from "../../../../app.types";
+import {NO_ENTITY_ID} from "../../../../models/base/base.model";
+import {SCHOOL_ID_LOCAL} from "../../../../utils/local-storage.util";
+import {StudentClassLevelService} from "../../../../services/student-class-level.service";
+import {AcademicYearServiceStrategy, SchoolBaseServiceStrategy} from "../../../../services/strategy/service.strategy";
 
 @Component({
   selector: 'app-teacher-class-list',
@@ -29,34 +33,34 @@ export class TeacherClassListComponent implements OnInit {
     private userService: UserService,
     private subjectService: SubjectService,
     private sequenceService: SequenceService,
-    private yearService: AcademicYearService,
-    private classLevelService: ClassLevelService,
-    private classLevelSubService: ClassLevelSubService,
+    private _academicYearService: AcademicYearService,
     private subjectTeacherService: SubjectTeacherService,
+    private _studentClassLevelService: StudentClassLevelService
   ) {
   }
 
   ngOnInit(): void {
     this.userService.getCompleteFromSession().subscribe(u => {
       this.teacher = u.account as Teacher;
-      if (u.account) this.loadData(u.account.id)
+      if (u.account) this.loadData(u.account as Teacher)
     });
   }
 
-  loadData = (teacherId: number) => {
-    this.yearService.getAll().subscribe(years => this.academicYears = years);
-    this.sequenceService.getAll().subscribe((sequences) => this.sequences = sequences);
-    this.subjectTeacherService.getAllByTeacher(teacherId).subscribe((sts) => sts.forEach(st => {
+  loadData = (teacher: Teacher) => {
+    this._academicYearService.loadAcademicYears(
+      this.academicYears, AcademicYearServiceStrategy.BY_SCHOOL,
+      {schoolId: teacher.schoolId},
+      [(academicYears: AcademicYear[]) => this.academicYears = academicYears]
+    );
+    this.sequenceService.getAllBySchoolId(SCHOOL_ID_LOCAL).subscribe((sequences) => this.sequences = sequences);
+    this.subjectTeacherService.getAllByTeacher(teacher.id!!).subscribe((sts) => sts.forEach(st => {
       this.subjectService.getById(st.key.subjectId).subscribe(subject => this.subjects.push(subject));
     }));
-    this.classLevelSubService.getAll().subscribe((classLevelSubs) => {
-      classLevelSubs.forEach(cls => this.classLevelService.getById(cls.classLevelId).subscribe((cl) => {
-        this.classes.push({
-          id: cls.id, name: `${cl.name} - ${cls.name}`, subId: cls.id, classLevel: cl, classLevelSub: cls
-        });
-        this.classes.sort((a, b) => a.name < b.name ? -1 : 1);
-      }));
-    });
+    this._studentClassLevelService.loadStudentClassLevels(
+      this.classes, SchoolBaseServiceStrategy.BY_SCHOOL,
+      {schoolId: SCHOOL_ID_LOCAL},
+      [(studentClassLevels: StudentClassLevel[]) => this.classes = studentClassLevels]
+    )
   }
 
 }
