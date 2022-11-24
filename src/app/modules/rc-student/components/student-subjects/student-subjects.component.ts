@@ -9,6 +9,7 @@ import {RcSubjectRegistered} from "../../../../app.types";
 import {SubjectService} from "../../../../services/subject.service";
 import {Subject} from "../../../../models/dto/subject.model";
 import {SubjectRegistration} from "../../../../models/dto/subject-registration.model";
+import {NO_ENTITY_ID} from "../../../../models/base/base.model";
 
 @Component({
   selector: 'app-student-subjects',
@@ -40,16 +41,20 @@ export class StudentSubjectsComponent implements OnInit {
     this.userService.getCompleteFromSession().subscribe(user => {
       this.student = user.account as Student;
       this.schoolService.getById(this.student.schoolId).subscribe(school => {
-        this.studentApplicationService.getTrialByStudent(this.student.id).subscribe((res) => {
-          this.currentTrial = res.find(sat => sat.academicYearId == school.currentYearId);
-          if (this.currentTrial) {
-            this.loadRegisteredSubjects(this.currentTrial.id);
+        this.studentApplicationService.getTrialByStudent(this.student.id ?? NO_ENTITY_ID).subscribe(
+          (res) => {
+            this.currentTrial = res.find(sat => sat.academicYearId == school.currentYearId);
+            if (this.currentTrial) {
+              this.loadRegisteredSubjects(this.currentTrial.id);
+            }
           }
-        });
+        );
       });
-      this.studentApplicationService.getAllByStudent(this.student.id).subscribe((res) => {
-        this.studentApplications = res
-      });
+      this.studentApplicationService.getAllByStudent(this.student.id ?? NO_ENTITY_ID).subscribe(
+        (res) => {
+          this.studentApplications = res
+        }
+      );
     });
   }
 
@@ -81,12 +86,15 @@ export class StudentSubjectsComponent implements OnInit {
         this.subjectsRegistered.push({
           subject: subject,
           complete: false,
-          registration: {subjectId: subject.id, satId: this.currentTrial.id, id: -1}
+          registration: {
+            subjectId: subject.id ?? NO_ENTITY_ID,
+            satId: this.currentTrial.id,
+          }
         });
         this.subjects = this.subjects.filter(s => s.id != subject.id);
       } else {
         if (sr && sr.complete) {
-          this.subjectRegistrationService.delete(sr.registration.id).subscribe(() => this.loadStudent())
+          this.subjectRegistrationService.delete(sr.registration.id ?? NO_ENTITY_ID).subscribe(() => this.loadStudent())
         }
         this.subjectsRegistered = this.subjectsRegistered.filter(sr => sr.subject.id != subject.id)
         this.subjects.push(subject);
