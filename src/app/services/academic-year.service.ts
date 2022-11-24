@@ -4,6 +4,10 @@ import {AcademicYear} from "../models/dto/academic-year.model";
 import {RC_ACADEMIC_YEAR_API_URL} from "../app.constants";
 import {HttpClient} from "@angular/common/http";
 import {ApiResponse} from "../models/dto/api.response";
+import {AcademicYearServiceStrategyParams, TeacherServiceStrategyParams} from "./strategy/service.strategy.params";
+import {AcademicYearServiceStrategy, TeacherServiceStrategy} from "./strategy/service.strategy";
+import {Teacher} from "../models/dto/teacher.model";
+import {NO_ENTITY_ID} from "../models/base/base.model";
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +19,10 @@ export class AcademicYearService {
 
   getAll(): Observable<AcademicYear[]> {
     return this.http.get<AcademicYear[]>(this.apiUrl);
+  }
+
+  getAllBySchool(schoolId: number): Observable<AcademicYear[]> {
+    return this.http.get<AcademicYear[]>(`${this.apiUrl}/school/${schoolId}`);
   }
 
   save(academicYear: AcademicYear): Observable<ApiResponse> {

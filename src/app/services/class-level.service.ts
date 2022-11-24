@@ -19,15 +19,11 @@ export class ClassLevelService {
   }
 
   getBySection(sectionId: number): Observable<ClassLevel[]> {
-    return this.http.get<ClassLevel[]>(`${this.classLevelApiUrl}/section`, {
-      params: {sectionId: sectionId}
-    });
+    return this.http.get<ClassLevel[]>(`${this.classLevelApiUrl}/section/${sectionId}`);
   }
 
   getBySchool(schoolId: number): Observable<ClassLevel[]> {
-    return this.http.get<ClassLevel[]>(`${this.classLevelApiUrl}/school`, {
-      params: {schoolId: schoolId}
-    });
+    return this.http.get<ClassLevel[]>(`${this.classLevelApiUrl}/school/${schoolId}`);
   }
 
   getById(id: number): Observable<ClassLevel> {

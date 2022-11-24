@@ -13,8 +13,8 @@ export class SequenceService {
   constructor(@Inject(RC_SEQUENCE_API_URL) private apiUrl: string, private http: HttpClient) {
   }
 
-  getAll(): Observable<Sequence[]> {
-    return this.http.get<Sequence[]>(this.apiUrl);
+  getAllBySchoolId(schoolId: number): Observable<Sequence[]> {
+    return this.http.get<Sequence[]>(`${this.apiUrl}/school/${schoolId}`);
   }
 
   getByTermId(termId: number): Observable<Sequence[]> {

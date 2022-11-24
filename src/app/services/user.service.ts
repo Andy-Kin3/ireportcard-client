@@ -2,7 +2,7 @@ import {Inject, Injectable} from '@angular/core';
 import {RC_USER_API_URL} from "../app.constants";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {User, UserComplete} from "../models/dto/user.model";
+import {UserModel, UserComplete} from "../models/dto/user.model";
 import {ApiResponse} from "../models/dto/api.response";
 
 @Injectable({
@@ -16,20 +16,20 @@ export class UserService {
   ) {
   }
 
-  getAll(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiUrl}`);
+  getAll(): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(`${this.apiUrl}`);
   }
 
-  getAllAdmin(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiUrl}/admin`);
+  getAllAdmin(): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(`${this.apiUrl}/admin`);
   }
 
-  getAllTeacher(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiUrl}/teacher`);
+  getAllTeacher(): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(`${this.apiUrl}/teacher`);
   }
 
-  getAllStudent(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiUrl}/student`);
+  getAllStudent(): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(`${this.apiUrl}/student`);
   }
 
   getComplete(id: number): Observable<UserComplete> {
@@ -44,7 +44,7 @@ export class UserService {
     return this.http.put<ApiResponse>(`${this.apiUrl}/${id}/toggle-approved`, {});
   }
 
-  update(user: User): Observable<ApiResponse> {
+  update(user: UserModel): Observable<ApiResponse> {
     return this.http.put<ApiResponse>(`${this.apiUrl}`, user);
   }
 }

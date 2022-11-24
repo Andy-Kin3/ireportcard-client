@@ -3,6 +3,9 @@ import {HttpClient} from "@angular/common/http";
 import {RC_STUDENT_CLASS_LEVEL_API_URL} from "../app.constants";
 import {StudentClassLevel} from "../app.types";
 import {Observable} from "rxjs";
+import {SchoolBaseServiceStrategy} from "./strategy/service.strategy";
+import {SchoolBaseParams} from "./strategy/service.strategy.params";
+import {NO_ENTITY_ID} from "../models/base/base.model";
 
 @Injectable({
   providedIn: 'root'
