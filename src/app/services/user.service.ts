@@ -47,4 +47,12 @@ export class UserService {
   update(user: UserModel): Observable<ApiResponse> {
     return this.http.put<ApiResponse>(`${this.apiUrl}`, user);
   }
+
+  loadUserFromSessionWithCallbacks(actions?: Function[]) {
+    if (actions) {
+      this.getCompleteFromSession().subscribe((u) => {
+        actions.forEach((action) => action(u));
+      });
+    }
+  }
 }

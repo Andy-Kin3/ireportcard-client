@@ -18,4 +18,22 @@ export class StudentClassLevelService {
   getAllBySchool = (schoolId: number): Observable<StudentClassLevel[]> => {
     return this.http.get<StudentClassLevel[]>(`${this.apiUrl}/school/${schoolId}`)
   }
+
+  loadStudentClassLevels(
+    studentClassLevels: StudentClassLevel[],
+    strategy: SchoolBaseServiceStrategy,
+    params: SchoolBaseParams,
+    actions?: Function[]
+  ) {
+    switch (strategy) {
+      case SchoolBaseServiceStrategy.BY_SCHOOL: {
+        this.getAllBySchool(params.schoolId ?? NO_ENTITY_ID).subscribe((res) => {
+          studentClassLevels = res
+          actions?.forEach(action => action(studentClassLevels))
+        });
+        break;
+      }
+
+    }
+  }
 }

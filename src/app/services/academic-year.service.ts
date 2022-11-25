@@ -36,4 +36,35 @@ export class AcademicYearService {
   getById(id: number): Observable<AcademicYear> {
     return this.http.get<AcademicYear>(`${this.apiUrl}/${id}`);
   }
+
+  loadAcademicYears(
+    academicYears: AcademicYear[],
+    strategy: AcademicYearServiceStrategy,
+    params: AcademicYearServiceStrategyParams,
+    actions?: Function[]
+  ) {
+    switch (strategy) {
+      case AcademicYearServiceStrategy.BY_ID: {
+        this.getById(params.id ?? NO_ENTITY_ID).subscribe((res) => {
+          academicYears = [res];
+          this.runLoadActions(academicYears, actions, res);
+        });
+        break;
+      }
+      case AcademicYearServiceStrategy.BY_SCHOOL: {
+        this.getAllBySchool(params.schoolId ?? NO_ENTITY_ID).subscribe((res) => {
+          academicYears = res;
+          this.runLoadActions(academicYears, actions, res);
+        });
+        break;
+      }
+      case AcademicYearServiceStrategy.BY_SCHOOL_MANAGER: {
+        break;
+      }
+    }
+  }
+
+  private runLoadActions(academicYears: AcademicYear[], actions?: Function[], res?: AcademicYear | AcademicYear[]) {
+    actions?.forEach((action) => action(academicYears, res));
+  }
 }

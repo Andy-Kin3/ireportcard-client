@@ -43,4 +43,39 @@ export class StudentService {
   delete(id: number): Observable<ApiResponse> {
     return this.http.delete<ApiResponse>(`${this.apiUrl}/${id}`);
   }
+
+  loadStudents(
+    students: Student[],
+    strategy: StudentServiceStrategy,
+    params: StudentServiceStrategyParams,
+    actions?: Function[]
+  ) {
+    switch (strategy) {
+      case StudentServiceStrategy.BY_ID: {
+        this.getById(params.id ?? NO_ENTITY_ID).subscribe((res) => {
+          students = [res];
+          this.runLoadActions(students, actions, res);
+        });
+        break;
+      }
+      case StudentServiceStrategy.BY_SCHOOL: {
+        this.getAllBySchoolId(params.schoolId ?? NO_ENTITY_ID).subscribe((res) => {
+          students = res;
+          this.runLoadActions(students, actions, res);
+        });
+        break;
+      }
+      case StudentServiceStrategy.BY_SCHOOL_MANAGER: {
+        this.getAllBySchoolManagerId(params.schoolManagerId ?? NO_ENTITY_ID).subscribe((res) => {
+          students = res;
+          this.runLoadActions(students, actions, res);
+        });
+        break;
+      }
+    }
+  }
+
+  private runLoadActions(students: Student[], actions?: Function[], res?: Student | Student[]) {
+    actions?.forEach(action => action(students, res));
+  }
 }

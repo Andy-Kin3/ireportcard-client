@@ -28,4 +28,27 @@ export class TeacherService {
     return this.http.get<Teacher[]>(`${this.apiUrl}/school-manager/${schoolManagerId}`);
   }
   getById = (id: number): Observable<Teacher> => this.http.get<Teacher>(`${this.apiUrl}/${id}`);
+
+  loadTeachers(teachers: Teacher[], strategy: TeacherServiceStrategy, params: TeacherServiceStrategyParams): void {
+    switch (strategy) {
+      case TeacherServiceStrategy.BY_ID: {
+        this.getById(params.id ?? NO_ENTITY_ID).subscribe((res) => {
+          teachers = [res];
+        });
+        break;
+      }
+      case TeacherServiceStrategy.BY_SCHOOL: {
+        this.getAllBySchool(params.schoolId ?? NO_ENTITY_ID).subscribe((res) => {
+          teachers = res;
+        });
+        break;
+      }
+      case TeacherServiceStrategy.BY_SCHOOL_MANAGER: {
+        this.getAllBySchoolManager(params.schoolManagerId ?? NO_ENTITY_ID).subscribe((res) => {
+          teachers = res
+        });
+        break;
+      }
+    }
+  }
 }
