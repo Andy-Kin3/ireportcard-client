@@ -41,3 +41,10 @@ export module LocalStorageUtil {
     return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.schoolManager) ?? "") as SchoolManagerLocal
   }
 }
+
+type SchoolManagerLocal = {
+  id: number,
+  smId: string
+}
+
+export const SCHOOL_ID_LOCAL = LocalStorageUtil.readSchoolId() ?? -1;
