@@ -1,14 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {AcademicYearUtil} from "../../../../utils/academic-year.util";
 import {AcademicYear} from "../../../../models/dto/academic-year.model";
-import {addToMessageService} from "../../../../utils/message-service.util";
 import {Term} from "../../../../models/dto/term.model";
-import {Sequence, SequenceType} from "../../../../models/dto/sequence.model";
-import {SequenceService} from "../../../../services/sequence.service";
-import {TermService} from "../../../../services/term.service";
-import {AcademicYearService} from "../../../../services/academic-year.service";
+import {Sequence} from "../../../../models/dto/sequence.model";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ATS} from "../../../../app.types";
 import {MessageService} from "primeng/api";
 import {School} from "../../../../models/dto/school.model";
 import {SchoolService} from "../../../../services/school.service";
@@ -33,6 +27,7 @@ export class AdminSettingComponent implements OnInit {
   years: AcademicYear[] = [];
   sequences: Sequence[] = [];
   academicYears: AcademicYear[] = [];
+
   constructor(
     private _fb: FormBuilder,
     private msgService: MessageService,

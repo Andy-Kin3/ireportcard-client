@@ -11,7 +11,7 @@ import {LocalStorageUtil} from "../../../../utils/local-storage.util";
 import {NO_ENTITY_ID} from "../../../../models/base/base.model";
 import {AcademicYearServiceStrategy, SchoolBaseServiceStrategy} from "../../../../services/strategy/service.strategy";
 import {StudentClassLevelService} from "../../../../services/student-class-level.service";
-import {EntityUtil} from "../../../../utils/message.util";
+import {EntityUtil} from "../../../../utils/entity.util";
 
 
 @Component({

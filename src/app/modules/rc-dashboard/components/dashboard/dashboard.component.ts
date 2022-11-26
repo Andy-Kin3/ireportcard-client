@@ -76,7 +76,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.schools = schools
         });
       } else {
-        this._schoolService.getAllBySchoolManagerId((u.account as Admin).schoolManagerId).subscribe((schools) =>{
+        this._schoolService.getAllBySchoolManagerId((u.account as Admin).schoolManagerId).subscribe((schools) => {
           this.schools = schools
         });
       }

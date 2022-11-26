@@ -5,7 +5,6 @@ import {UserComplete, UserLoginRequest} from "../../../../models/dto/user.model"
 import {LocalStorageUtil} from "../../../../utils/local-storage.util";
 import {Router} from "@angular/router";
 import {ReportCardService} from "../../../../services/report-card.service";
-import writeSchoolManager = LocalStorageUtil.writeSchoolManager;
 import {UserService} from "../../../../services/user.service";
 import {Admin} from "../../../../models/dto/admin.model";
 import {Student} from "../../../../models/dto/student.model";

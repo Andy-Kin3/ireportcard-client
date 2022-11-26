@@ -11,12 +11,11 @@ import {ReportCardService} from "../../../../services/report-card.service";
 import {SchoolService} from "../../../../services/school.service";
 import {School} from "../../../../models/dto/school.model";
 import {LocalStorageUtil} from "../../../../utils/local-storage.util";
-import {Section} from "../../../../models/dto/section.model";
 import {SectionService} from "../../../../services/section.service";
 import {PaymentSetting} from "../../../../models/dto/payment-setting.model";
 import {PaymentSettingService} from "../../../../services/payment-setting.service";
 import {NO_ENTITY_ID} from "../../../../models/base/base.model";
-import {EntityUtil} from "../../../../utils/message.util";
+import {EntityUtil} from "../../../../utils/entity.util";
 import {AcademicYearServiceStrategy} from "../../../../services/strategy/service.strategy";
 
 @Component({
@@ -103,7 +102,9 @@ export class RcSettingsComponent implements OnInit {
     });
     this._academicYearService.loadAcademicYears(
       this.academicYears, AcademicYearServiceStrategy.BY_SCHOOL,
-      {schoolId: this.schoolId}, [(years: AcademicYear[]) => {this.academicYears = years}]
+      {schoolId: this.schoolId}, [(years: AcademicYear[]) => {
+        this.academicYears = years
+      }]
     );
   }
 

@@ -1,5 +1,5 @@
 import {Inject, Injectable} from '@angular/core';
-import {RC_SCHOOL_MANAGER_API_URL, RC_SETTINGS_API_URL} from "../app.constants";
+import {RC_SCHOOL_MANAGER_API_URL} from "../app.constants";
 import {HttpClient} from "@angular/common/http";
 import {SchoolManagerSetup} from "../models/dto/school-manager.model";
 import {ApiResponse} from "../models/dto/api.response";

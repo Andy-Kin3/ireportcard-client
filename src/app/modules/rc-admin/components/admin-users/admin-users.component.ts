@@ -10,7 +10,7 @@ import {UserService} from "../../../../services/user.service";
 export class AdminUsersComponent implements OnInit {
   users: UserModel[] = [];
   selectedRoleId: number = -1;
-  roles: {id: number, name: string}[] = [];
+  roles: { id: number, name: string }[] = [];
 
   constructor(private _userService: UserService) {
     this.roles = [
@@ -31,11 +31,14 @@ export class AdminUsersComponent implements OnInit {
   onSelectedRoleAction() {
     switch (this.selectedRoleId) {
       case 1:
-        this._userService.getAllAdmin().subscribe(users => this.users = users); break;
+        this._userService.getAllAdmin().subscribe(users => this.users = users);
+        break;
       case 2:
-        this._userService.getAllStudent().subscribe(users => this.users = users); break;
+        this._userService.getAllStudent().subscribe(users => this.users = users);
+        break;
       case 3:
-        this._userService.getAllTeacher().subscribe(users => this.users = users); break;
+        this._userService.getAllTeacher().subscribe(users => this.users = users);
+        break;
       default:
         this.loadUsers();
     }

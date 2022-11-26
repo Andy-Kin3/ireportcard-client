@@ -10,7 +10,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Subject} from "../../../../../models/dto/subject.model";
 import {SubjectService} from "../../../../../services/subject.service";
 import {NO_ENTITY_ID} from "../../../../../models/base/base.model";
-import {SubjectServiceStrategy} from "../../../../../services/strategy/service.strategy";
 import {LocalStorageUtil} from "../../../../../utils/local-storage.util";
 
 @Component({

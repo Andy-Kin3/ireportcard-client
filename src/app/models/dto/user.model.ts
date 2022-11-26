@@ -15,6 +15,7 @@ export interface User {
   approved?: boolean,
   role?: Role
 }
+
 export class UserModel extends BaseModel implements User {
   constructor(
     public email: string,

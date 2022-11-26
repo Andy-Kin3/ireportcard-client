@@ -8,7 +8,7 @@
                       (onUserSaved)="loadUserComplete()"></app-user-details>
     <app-change-password *ngIf="student && student.account" [username]="student.user.email"></app-change-password>
 
-    <p-dialog  header="Select Class Level" styleClass="w-30rem h-30rem" [(visible)]="showApplyDialog"
+    <p-dialog header="Select Class Level" styleClass="w-30rem h-30rem" [(visible)]="showApplyDialog"
               [closeOnEscape]="false" [modal]="true">
       <form [formGroup]="selectClassLevelForm" (submit)="createStudentApplicationAction()">
         <div class="field">

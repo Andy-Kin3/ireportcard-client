@@ -3,10 +3,10 @@ import {RC_AUTH_API_URL} from "../app.constants";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {
-  UserModel,
   UserAuth,
   UserChangePassword,
   UserLoginRequest,
+  UserModel,
   UserRegisterRequest,
   UserRegisterResponse
 } from "../models/dto/user.model";

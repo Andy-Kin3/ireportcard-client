@@ -19,7 +19,7 @@ import {RcReusableModule} from "./modules/rc-reusable/rc-reusable.module";
 import {RcSharedModule} from "./modules/rc-shared.module";
 import {LocationStrategy, PathLocationStrategy} from "@angular/common";
 import {RcSetupModule} from "./modules/rc-setup/rc-setup.module";
-import { SampleComponent } from './components/sample/sample.component';
+import {SampleComponent} from './components/sample/sample.component';
 
 
 @NgModule({

@@ -13,7 +13,8 @@ export class PaymentSettingService {
   constructor(
     @Inject(RC_PAYMENT_SETTING_API_URL) private apiUrl: string,
     private http: HttpClient,
-  ) { }
+  ) {
+  }
 
   save = (paymentSetting: PaymentSetting): Observable<ApiResponse> => {
     return this.http.post<ApiResponse>(this.apiUrl, paymentSetting);
@@ -23,7 +24,7 @@ export class PaymentSettingService {
     return this.http.put<ApiResponse>(this.apiUrl, paymentSetting);
   }
 
-  getBySchoolId = (schoolId: number): Observable<PaymentSetting> =>  {
+  getBySchoolId = (schoolId: number): Observable<PaymentSetting> => {
     return this.http.get<PaymentSetting>(`${this.apiUrl}/school/${schoolId}`);
   }
 }

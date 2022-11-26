@@ -8,7 +8,7 @@ export interface IAcademicYear {
   academicInfo?: AcademicInfo
 }
 
-export class AcademicYear extends BaseModel implements IAcademicYear{
+export class AcademicYear extends BaseModel implements IAcademicYear {
   constructor(
     public name: string,
     public startYear: number,

@@ -14,9 +14,11 @@ export class NavItemComponent implements OnInit {
   }
 
   @Output() onSelect: EventEmitter<number> = new EventEmitter<number>();
+
   constructor(
     private _router: Router
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
   }

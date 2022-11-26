@@ -1,55 +1,32 @@
 import {Component, OnInit} from '@angular/core';
-import {MenuItem} from "primeng/api";
+import {NavItem, SIDEBAR_STUDENT_MENU_ITEMS} from "../../../../models/ui/nav-item";
 
 @Component({
   selector: 'app-student-dashboard',
   styleUrls: ['./student-dashboard.component.scss'],
   template: `
-    <header class="z-1 w-full fixed top-0">
-      <p-toast></p-toast>
-      <app-top-menu [menuItems]="studentMenuItems"></app-top-menu>
-    </header>
-    <main class="z-0 h-full min-h-screen my-2 py-8">
-      <router-outlet></router-outlet>
-    </main>
-    <footer class="z-1">
-      <app-footer></app-footer>
-    </footer>
+    <p-toast></p-toast>
+    <div class="min-h-screen flex surface-ground">
+      <app-sidebar [navItems]="studentMenuItems"></app-sidebar>
+      <div class="min-h-screen flex flex-column relative flex-auto">
+        <app-top-menu></app-top-menu>
+
+        <div class="flex flex-column flex-auto">
+          <div class="p-5">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
   `
 })
 export class StudentDashboardComponent implements OnInit {
-  studentMenuItems: MenuItem[] = [];
+  studentMenuItems: NavItem[] = SIDEBAR_STUDENT_MENU_ITEMS;
 
   constructor() {
   }
 
   ngOnInit(): void {
-    this.studentMenuItems = [
-      {
-        label: 'Home',
-        icon: 'pi pi-fw pi-home',
-        routerLink: ['/student/home'],
-        routerLinkActiveOptions: {exact: true},
-      },
-      {
-        label: 'Applications',
-        icon: 'pi pi-fw pi-book',
-        routerLink: ['/student/application'],
-        routerLinkActiveOptions: {exact: true},
-      },
-      {
-        label: 'Subjects',
-        icon: 'pi pi-fw pi-list',
-        routerLink: ['/student/subjects'],
-        routerLinkActiveOptions: {exact: true},
-      },
-      {
-        label: 'Results',
-        icon: 'pi pi-fw pi-list',
-        routerLink: ['/student/results'],
-        routerLinkActiveOptions: {exact: true},
-      },
-    ];
   }
 
 }

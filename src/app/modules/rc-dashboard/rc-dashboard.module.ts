@@ -25,7 +25,7 @@ import {
   RcViewApplicationComponent
 } from './components/rc-applications/rc-view-application/rc-view-application.component';
 import {RcSelectSchoolComponent} from "./components/rc-select-school/rc-select-school.component";
-import { DepartmentSettingsComponent } from './components/rc-settings/department-settings/department-settings.component';
+import {DepartmentSettingsComponent} from './components/rc-settings/department-settings/department-settings.component';
 
 @NgModule({
   declarations: [

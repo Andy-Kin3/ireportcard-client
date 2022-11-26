@@ -5,7 +5,7 @@ import {School} from "../../../../models/dto/school.model";
 import {SchoolService} from "../../../../services/school.service";
 import {DateUtil} from "../../../../utils/date.util";
 import {Student, StudentInfo} from "../../../../models/dto/student.model";
-import {User, UserModel} from "../../../../models/dto/user.model";
+import {UserModel} from "../../../../models/dto/user.model";
 import {Role} from "../../../../models/enum/role.enum";
 import {AuthService} from "../../../../services/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -37,26 +37,6 @@ export class RegisterStudentComponent implements OnInit {
     }
     this.maximumDate = new Date(Date.UTC(new Date().getUTCFullYear() - 1, 0));
     this.studentForm = this.buildStudentForm();
-  }
-
-  private buildStudentForm = (): FormGroup => {
-    const suggestedDate: Date = new Date(Date.UTC(new Date().getUTCFullYear() - 12, 0, 1));
-    return this._fb.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-      firstname: ['', Validators.required],
-      lastname: ['', Validators.required],
-      gender: ['', Validators.required],
-      dob: [suggestedDate, Validators.required],
-      pob: ['', Validators.required],
-      school: [0, Validators.required],
-      fatherName: [''],
-      fatherPhone: [''],
-      motherName: [''],
-      motherPhone: [''],
-      guardianName: [''],
-      guardianPhone: [''],
-    });
   }
 
   ngOnInit(): void {
@@ -102,6 +82,26 @@ export class RegisterStudentComponent implements OnInit {
     const password = this.studentForm.get('password')?.value;
     this._authService.registerStudent(student, password).subscribe(() => {
       this._router.navigate(['/auth/login']).then();
+    });
+  }
+
+  private buildStudentForm = (): FormGroup => {
+    const suggestedDate: Date = new Date(Date.UTC(new Date().getUTCFullYear() - 12, 0, 1));
+    return this._fb.group({
+      email: ['', Validators.required],
+      password: ['', Validators.required],
+      firstname: ['', Validators.required],
+      lastname: ['', Validators.required],
+      gender: ['', Validators.required],
+      dob: [suggestedDate, Validators.required],
+      pob: ['', Validators.required],
+      school: [0, Validators.required],
+      fatherName: [''],
+      fatherPhone: [''],
+      motherName: [''],
+      motherPhone: [''],
+      guardianName: [''],
+      guardianPhone: [''],
     });
   }
 }

@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {markNavItemActive, markNavItemActiveByPath, NavItem} from "../../../../models/ui/nav-item";
-import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-sidebar',
@@ -9,8 +8,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class SidebarComponent implements OnInit {
   @Input() navItems: NavItem[] = [];
-  constructor(
-  ) {
+
+  constructor() {
 
   }
 

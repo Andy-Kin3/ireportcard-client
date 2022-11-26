@@ -2,7 +2,7 @@ import {Inject, Injectable} from '@angular/core';
 import {RC_USER_API_URL} from "../app.constants";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {UserModel, UserComplete} from "../models/dto/user.model";
+import {UserComplete, UserModel} from "../models/dto/user.model";
 import {ApiResponse} from "../models/dto/api.response";
 
 @Injectable({

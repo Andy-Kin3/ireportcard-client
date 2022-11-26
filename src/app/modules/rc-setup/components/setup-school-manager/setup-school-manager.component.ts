@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UserModel} from "../../../../models/dto/user.model";
 import {SchoolManager, SchoolManagerSetup} from "../../../../models/dto/school-manager.model";

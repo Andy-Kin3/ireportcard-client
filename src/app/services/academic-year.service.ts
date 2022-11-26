@@ -4,9 +4,8 @@ import {AcademicYear} from "../models/dto/academic-year.model";
 import {RC_ACADEMIC_YEAR_API_URL} from "../app.constants";
 import {HttpClient} from "@angular/common/http";
 import {ApiResponse} from "../models/dto/api.response";
-import {AcademicYearServiceStrategyParams, TeacherServiceStrategyParams} from "./strategy/service.strategy.params";
-import {AcademicYearServiceStrategy, TeacherServiceStrategy} from "./strategy/service.strategy";
-import {Teacher} from "../models/dto/teacher.model";
+import {AcademicYearServiceStrategyParams} from "./strategy/service.strategy.params";
+import {AcademicYearServiceStrategy} from "./strategy/service.strategy";
 import {NO_ENTITY_ID} from "../models/base/base.model";
 
 @Injectable({

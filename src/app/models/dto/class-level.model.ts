@@ -9,7 +9,7 @@ export interface ClassLevel {
   classLevelSubs?: ClassLevelSub[]
 }
 
-export class ClassLevel extends VersionedModel{
+export class ClassLevel extends VersionedModel {
   constructor(
     public name: string,
     public sectionId: number,

@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {MenuItem} from "primeng/api";
 import {NavItem, SIDEBAR_ADMIN_MENU_ITEMS} from "../../../../models/ui/nav-item";
 
 @Component({

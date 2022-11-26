@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ATS} from "../../../../app.types";
 import {AcademicYearUtil} from "../../../../utils/academic-year.util";
 import {AcademicYear} from "../../../../models/dto/academic-year.model";
@@ -12,7 +12,7 @@ import {MessageService} from "primeng/api";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NO_ENTITY_ID} from "../../../../models/base/base.model";
 import {School} from "../../../../models/dto/school.model";
-import {EntityUtil} from "../../../../utils/message.util";
+import {EntityUtil} from "../../../../utils/entity.util";
 
 @Component({
   selector: 'app-admin-school-setting',
@@ -39,7 +39,8 @@ export class AdminSchoolSettingComponent implements OnInit {
     private _termService: TermService,
     private _sequenceService: SequenceService,
     private _academicYearService: AcademicYearService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.academicYearForm = this._fb.group({

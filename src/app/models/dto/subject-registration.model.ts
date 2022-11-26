@@ -8,7 +8,7 @@ export interface SubjectRegistration {
   updatedAt?: string;
 }
 
-export class SubjectRegistration extends VersionedModel{
+export class SubjectRegistration extends VersionedModel {
   constructor(
     satId: number,
     subjectId: number,

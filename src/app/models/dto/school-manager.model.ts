@@ -1,7 +1,7 @@
 import {BaseModel} from "../base/base.model";
 import {UserModel} from "./user.model";
 
-export class SchoolManager extends BaseModel{
+export class SchoolManager extends BaseModel {
   constructor(
     public managerId: number,
     public name: string,

@@ -1,6 +1,6 @@
 import {BaseModel} from "./base.model";
 
-export class VersionedModel extends BaseModel{
+export class VersionedModel extends BaseModel {
   constructor(
     public createdAt?: string,
     public updatedAt?: string,

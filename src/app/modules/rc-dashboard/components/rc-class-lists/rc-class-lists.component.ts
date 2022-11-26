@@ -10,7 +10,6 @@ import {ClassLevelSubService} from "../../../../services/class-level-sub.service
 import {SectionService} from "../../../../services/section.service";
 import {LocalStorageUtil, SCHOOL_ID_LOCAL} from "../../../../utils/local-storage.util";
 import {StudentClassLevel} from "../../../../app.types";
-import {NO_ENTITY_ID} from "../../../../models/base/base.model";
 import {StudentClassLevelService} from "../../../../services/student-class-level.service";
 import {SchoolBaseServiceStrategy} from "../../../../services/strategy/service.strategy";
 

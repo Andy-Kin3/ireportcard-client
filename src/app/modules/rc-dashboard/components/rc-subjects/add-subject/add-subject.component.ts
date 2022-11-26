@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Section} from "../../../../../models/dto/section.model";
-import {SectionService} from "../../../../../services/section.service";
 import {Subject} from "../../../../../models/dto/subject.model";
 import {SubjectService} from "../../../../../services/subject.service";
 import {Router} from "@angular/router";

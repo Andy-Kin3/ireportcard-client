@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {AcademicYearService} from "../../../../services/academic-year.service";
-import {ClassLevelService} from "../../../../services/class-level.service";
-import {ClassLevelSubService} from "../../../../services/class-level-sub.service";
 import {SubjectService} from "../../../../services/subject.service";
 import {SequenceService} from "../../../../services/sequence.service";
 import {AcademicYear} from "../../../../models/dto/academic-year.model";
@@ -11,7 +9,6 @@ import {SubjectTeacherService} from "../../../../services/subject-teacher.servic
 import {UserService} from "../../../../services/user.service";
 import {Teacher} from "../../../../models/dto/teacher.model";
 import {StudentClassLevel} from "../../../../app.types";
-import {NO_ENTITY_ID} from "../../../../models/base/base.model";
 import {SCHOOL_ID_LOCAL} from "../../../../utils/local-storage.util";
 import {StudentClassLevelService} from "../../../../services/student-class-level.service";
 import {AcademicYearServiceStrategy, SchoolBaseServiceStrategy} from "../../../../services/strategy/service.strategy";

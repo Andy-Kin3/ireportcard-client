@@ -11,7 +11,6 @@ import {StudentApplicationTrial} from "../../../../models/dto/student-applicatio
 import {StudentClassLevel} from "../../../../app.types";
 import {ReportCardModel} from "../../../../models/dto/report-card.model";
 import {ReportCardService} from "../../../../services/report-card.service";
-import {NO_ENTITY_ID} from "../../../../models/base/base.model";
 
 @Component({
   selector: 'app-student-results',
