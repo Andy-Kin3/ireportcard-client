@@ -32,6 +32,10 @@ const routes: Routes = [
     path: 'dashboard',
     loadChildren: () => import('./modules/rc-dashboard/rc-dashboard.module').then(m => m.RcDashboardModule)
   },
+  {
+    path: 'setup',
+    loadChildren: () => import('./modules/rc-setup/rc-setup.module').then(m => m.RcSetupModule)
+  }
 ];
 
 @NgModule({

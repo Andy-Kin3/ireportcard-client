@@ -1,42 +1,50 @@
-const LS_KEY = {
+const LOCAL_STORAGE_KEY = {
   sessionId: 'rc_session_id',
   school: 'rc_school',
   schoolId: 'rc_school_id',
   rememberMe: 'rc_remember_me',
+  schoolManager: "rc_school_manager"
+
 };
 export module LocalStorageUtil {
   export const writeUserToken = (token: string) => {
-    localStorage.setItem(LS_KEY.sessionId, token)
+    localStorage.setItem(LOCAL_STORAGE_KEY.sessionId, token)
   }
 
   export const readUserToken = (): string => {
-    const token = localStorage.getItem(LS_KEY.sessionId);
+    const token = localStorage.getItem(LOCAL_STORAGE_KEY.sessionId);
     return token ? token : '';
   }
 
   export const deleteUserToken = (): void => {
-    localStorage.removeItem(LS_KEY.sessionId);
+    localStorage.removeItem(LOCAL_STORAGE_KEY.sessionId);
   }
 
   export const writeSchoolId = (schoolId: number): void => {
-    localStorage.setItem(LS_KEY.schoolId, String(schoolId));
+    localStorage.setItem(LOCAL_STORAGE_KEY.schoolId, String(schoolId));
   }
 
   export const readSchoolId = (): number | null => {
-    const id = localStorage.getItem(LS_KEY.schoolId);
+    const id = localStorage.getItem(LOCAL_STORAGE_KEY.schoolId);
     return id ? parseInt(id) : null;
   }
 
   export const deleteSchoolId = (): void => {
-    localStorage.removeItem(LS_KEY.schoolId);
+    localStorage.removeItem(LOCAL_STORAGE_KEY.schoolId);
   }
 
-  export const writeRememberMe = (value: boolean) => {
-    localStorage.setItem(LS_KEY.rememberMe, String(value));
+  export const writeSchoolManager = (schoolManagerLocal: SchoolManagerLocal) => {
+    localStorage.setItem(LOCAL_STORAGE_KEY.schoolManager, JSON.stringify(schoolManagerLocal));
   }
 
-  export const readRememberMe = (): boolean => {
-    const rem = localStorage.getItem(LS_KEY.rememberMe);
-    return rem ? rem === 'true' : false;
+  export const readSchoolManager = (): SchoolManagerLocal => {
+    return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.schoolManager) ?? "") as SchoolManagerLocal
   }
 }
+
+type SchoolManagerLocal = {
+  id: number,
+  smId: string
+}
+
+export const SCHOOL_ID_LOCAL = LocalStorageUtil.readSchoolId() ?? -1;

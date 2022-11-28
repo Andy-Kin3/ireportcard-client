@@ -31,7 +31,8 @@
         <button (click)="setClassLevelSubForm(-1, '')" icon="pi pi-plus-circle" pButton label="Add Sub Class"></button>
       </div>
       <div>
-        <button [disabled]="!classForm.valid" class="lg:w-24rem" icon="pi pi-check" label="Save Class" pButton
+        <button (click)="saveClassLevel()" [disabled]="!classForm.valid" class="lg:w-24rem" icon="pi pi-check"
+                label="Save Class" pButton
                 type="button"></button>
       </div>
       <div class="form-text text-center">

@@ -15,7 +15,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class SubjectComponent implements OnInit {
   subject!: Subject;
   subjectForm: FormGroup = this.fb.group({});
-  sections: Section[] = [];
+  sections: Section[] = []; // TODO load departments here instead
   private readonly schoolId = LocalStorageUtil.readSchoolId();
 
   constructor(
@@ -51,14 +51,17 @@ export class SubjectComponent implements OnInit {
   setupSubjectForm(subject: Subject) {
     this.subjectForm = this.fb.group({
       name: [subject.name, Validators.required], code: [subject.code, Validators.required],
-      coeff: [subject.coefficient, Validators.required], section: [subject.sectionId, Validators.required]
+      coeff: [subject.coefficient, Validators.required], department: [subject.departmentId, Validators.required]
     });
   }
 
   saveSubjectAction(): void {
     const subject: Subject = {
-      id: this.subject.id, name: this.subjectForm.get('name')?.value, code: this.subjectForm.get('code')?.value,
-      coefficient: this.subjectForm.get('coeff')?.value, sectionId: this.subjectForm.get('section')?.value
+      id: this.subject.id,
+      name: this.subjectForm.get('name')?.value,
+      code: this.subjectForm.get('code')?.value,
+      coefficient: this.subjectForm.get('coeff')?.value,
+      departmentId: this.subjectForm.get('department')?.value // TODO fix section
     }
     this.subjectService.update(subject).subscribe(() => {
 

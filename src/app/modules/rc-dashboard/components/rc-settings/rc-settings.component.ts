@@ -11,10 +11,12 @@ import {ReportCardService} from "../../../../services/report-card.service";
 import {SchoolService} from "../../../../services/school.service";
 import {School} from "../../../../models/dto/school.model";
 import {LocalStorageUtil} from "../../../../utils/local-storage.util";
-import {Section} from "../../../../models/dto/section.model";
 import {SectionService} from "../../../../services/section.service";
 import {PaymentSetting} from "../../../../models/dto/payment-setting.model";
 import {PaymentSettingService} from "../../../../services/payment-setting.service";
+import {NO_ENTITY_ID} from "../../../../models/base/base.model";
+import {EntityUtil} from "../../../../utils/entity.util";
+import {AcademicYearServiceStrategy} from "../../../../services/strategy/service.strategy";
 
 @Component({
   selector: 'app-rc-settings',
@@ -23,11 +25,10 @@ import {PaymentSettingService} from "../../../../services/payment-setting.servic
 })
 export class RcSettingsComponent implements OnInit {
 
-  schoolId: number | null = LocalStorageUtil.readSchoolId();
+  schoolId: number = LocalStorageUtil.readSchoolId() ?? NO_ENTITY_ID;
   settingsForm: FormGroup = this.fb.group({});
   paymentSettingsForm: FormGroup = this.fb.group({});
   school?: School;
-  sections: Section[] = [];
   sequences: Sequence[] = [];
 
   terms: Term[] = [];
@@ -42,21 +43,15 @@ export class RcSettingsComponent implements OnInit {
     private sectionService: SectionService,
     private sequenceService: SequenceService,
     private termService: TermService,
-    private academicYearService: AcademicYearService,
-  private _paymentSettingService: PaymentSettingService,
+    private _academicYearService: AcademicYearService,
+    private _paymentSettingService: PaymentSettingService,
   ) {
   }
 
   ngOnInit(): void {
     this.loadSchool();
     this.loadSettingsInfo();
-    /*
-    this.settingsForm = this.fb.group({
-      applicationsOpen: [false, Validators.required], name: ["", Validators.required], year: [0, Validators.required],
-      term: ["", Validators.required], sequence: [0, Validators.required],
-      maxGrade: [0, Validators.compose([Validators.min(0), Validators.max(100)])]
-    });
-     */
+
     this.settingsForm = this.fb.group({
       applicationsOpen: [this.school ? this.school.applicationOpen : false, Validators.required],
       name: [this.school ? this.school.name : '', Validators.required],
@@ -85,8 +80,7 @@ export class RcSettingsComponent implements OnInit {
   }
 
   loadSchool(): void {
-    this.schoolId = LocalStorageUtil.readSchoolId();
-    if (this.schoolId) {
+    if (EntityUtil.isValidId(this.schoolId)) {
       this.schoolService.getById(this.schoolId).subscribe((school) => {
         this.school = school;
         this.patchSettingsForm(school);
@@ -98,18 +92,20 @@ export class RcSettingsComponent implements OnInit {
   }
 
   loadSettingsInfo(): void {
-    if (this.schoolId) {
-      this.sectionService.getAllBySchoolId(this.schoolId).subscribe((sections) => this.sections = sections);
-    }
-    this.sequenceService.getAll().subscribe((sequences) => this.sequences = sequences);
-    this.termService.getAll().subscribe((terms) => {
+    this.sequenceService.getAllBySchoolId(this.schoolId).subscribe((sequences) => this.sequences = sequences);
+    this.termService.getAllBySchoolId(this.schoolId).subscribe((terms) => {
       this.sequencesByTerms = [];
       this.terms = terms;
       this.terms.forEach(term => this.sequenceService.getByTermId(term.id).subscribe((sequences) => {
         this.sequencesByTerms.push({term: term, sequences: sequences});
       }))
     });
-    this.academicYearService.getAll().subscribe((years) => this.academicYears = years);
+    this._academicYearService.loadAcademicYears(
+      this.academicYears, AcademicYearServiceStrategy.BY_SCHOOL,
+      {schoolId: this.schoolId}, [(years: AcademicYear[]) => {
+        this.academicYears = years
+      }]
+    );
   }
 
   saveSettingsAction() {
@@ -121,7 +117,7 @@ export class RcSettingsComponent implements OnInit {
         currentYearId: parseInt(this.settingsForm.get("year")?.value),
         maxGrade: this.settingsForm.get('maxGrade')?.value,
         currentSequenceId: parseInt(this.settingsForm.get("sequence")?.value),
-        ownerId: this.school.ownerId
+        schoolManagerId: this.school.schoolManagerId // fix school manager id
       }
       this.schoolService.update(school).subscribe(() => this.loadSchool());
     }
@@ -130,36 +126,11 @@ export class RcSettingsComponent implements OnInit {
   savePaymentSettingsAction() {
     if (this.school) {
       const paymentSetting = new PaymentSetting(
-        -1,
         this.paymentSettingsForm.get('tuitionFee')?.value,
         this.paymentSettingsForm.get('applicationFee')?.value,
-        this.school.id
+        this.school.id!!
       );
       this._paymentSettingService.save(paymentSetting).subscribe(() => this.loadSchool());
     }
-  }
-
-  saveSection(sectionInput: HTMLInputElement | Section, blocked: boolean) {
-    if (this.school) {
-      if (blocked) {
-        if (sectionInput instanceof HTMLInputElement) {
-          if (sectionInput.hidden && sectionInput.value !== "") {
-            const section: Section = {
-              id: -1, name: sectionInput.value, schoolId: this.school?.id, category: ""
-            }
-            this.sectionService.save(section).subscribe(() => {
-              sectionInput.value = "";
-              this.loadSettingsInfo();
-            });
-          }
-        } else {
-          this.sectionService.update(sectionInput).subscribe(() => this.loadSettingsInfo());
-        }
-      }
-    }
-  }
-
-  deleteSection(section: Section) {
-    this.sectionService.delete(section.id).subscribe(() => this.loadSettingsInfo());
   }
 }

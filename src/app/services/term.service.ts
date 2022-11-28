@@ -13,8 +13,8 @@ export class TermService {
   constructor(@Inject(RC_TERM_API_URL) private apiUrl: string, private http: HttpClient) {
   }
 
-  getAll(): Observable<Term[]> {
-    return this.http.get<Term[]>(`${this.apiUrl}`);
+  getAllBySchoolId(schoolId: number): Observable<Term[]> {
+    return this.http.get<Term[]>(`${this.apiUrl}/school/${schoolId}`);
   }
 
   save(term: Term): Observable<ApiResponse> {

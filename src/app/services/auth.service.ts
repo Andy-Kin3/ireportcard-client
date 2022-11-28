@@ -3,10 +3,10 @@ import {RC_AUTH_API_URL} from "../app.constants";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {
-  User,
   UserAuth,
   UserChangePassword,
   UserLoginRequest,
+  UserModel,
   UserRegisterRequest,
   UserRegisterResponse
 } from "../models/dto/user.model";
@@ -30,7 +30,7 @@ export class AuthService {
     return this.http.post<UserRegisterResponse>(`${this.apiUrl}/register`, userReg);
   }
 
-  registerAdmin = (admin: User, password: string): Observable<UserRegisterResponse> => {
+  registerAdmin = (admin: UserModel, password: string): Observable<UserRegisterResponse> => {
     return this.http.post<UserRegisterResponse>(`${this.apiUrl}/register/admin`, admin, {
       params: {password: password}
     });

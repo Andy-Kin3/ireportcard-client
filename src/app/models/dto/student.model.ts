@@ -1,5 +1,5 @@
 import {Gender} from "../enum/gender.enum";
-import {User} from "./user.model";
+import {UserModel} from "./user.model";
 import {BaseModel} from "../base/base.model";
 
 export class Student extends BaseModel {
@@ -11,7 +11,7 @@ export class Student extends BaseModel {
     public pob: string,
     public schoolId: number,
     public info: StudentInfo,
-    public user: User
+    public user: UserModel
   ) {
     super();
     this.name = `${this.user.firstName} ${this.user.lastName}`

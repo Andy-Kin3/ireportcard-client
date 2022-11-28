@@ -11,7 +11,7 @@ export interface School {
   currentSequenceId?: number,
 }
 
-export class School extends VersionedModel{
+export class School extends VersionedModel {
   constructor(
     public name: string,
     public maxGrade: number,

@@ -10,6 +10,7 @@ import {Section} from "../../../../models/dto/section.model";
 import {Router} from "@angular/router";
 import {RcClassLevel} from "../../../../app.types";
 import {LocalStorageUtil} from "../../../../utils/local-storage.util";
+import {NO_ENTITY_ID} from "../../../../models/base/base.model";
 
 @Component({
   selector: 'app-rc-classes',
@@ -45,7 +46,7 @@ export class RcClassesComponent implements OnInit {
       next: (sections) => {
         this.sections = sections;
         if (sections.length > 0) {
-          this.sectionId = sections[0].id;
+          this.sectionId = sections[0].id ?? NO_ENTITY_ID;
         }
         this.loadClasses();
       }
@@ -58,6 +59,7 @@ export class RcClassesComponent implements OnInit {
     if (sectionId > 0) {
       this.classLevelService.getBySection(sectionId).subscribe({
         next: (classLevels: ClassLevel[]) => {
+          console.log(classLevels)
           classLevels.forEach((classLevel) => this.loadClassSubs(classLevel));
         },
         error: (error) => {
@@ -84,7 +86,8 @@ export class RcClassesComponent implements OnInit {
 
   addClassLevelSubAction(classLevel: ClassLevel, inputElement: HTMLInputElement) {
     const classLevelSub: ClassLevelSub = {
-      id: 0, name: inputElement.value, classLevelId: classLevel.id
+      name: inputElement.value,
+      classLevelId: classLevel.id!!
     }
     this.classLevelSubService.save(classLevelSub).subscribe(() => {
       this.loadClassSubs(classLevel);
@@ -110,7 +113,7 @@ export class RcClassesComponent implements OnInit {
   }
 
   private loadClassSubs(classLevel: ClassLevel): void {
-    this.classLevelSubService.getAllByClassLevelId(classLevel.id).subscribe({
+    this.classLevelSubService.getAllByClassLevelId(classLevel.id!!).subscribe({
       next: (classLevelSubs) => {
         const classLevelFind = this.classes.find((c) => c.classLevel.id === classLevel.id);
         if (classLevelFind) {

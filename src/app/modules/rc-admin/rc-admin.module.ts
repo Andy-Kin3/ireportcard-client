@@ -16,6 +16,7 @@ import {AdminAdminsComponent} from './components/admin-admins/admin-admins.compo
 import {AdminAddAdminComponent} from './components/admin-admins/admin-add-admin/admin-add-admin.component';
 import {AdminViewAdminComponent} from './components/admin-admins/admin-view-admin/admin-view-admin.component';
 import {RcAuthModule} from "../rc-auth/rc-auth.module";
+import {AdminSchoolSettingComponent} from './components/admin-school-setting/admin-school-setting.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import {RcAuthModule} from "../rc-auth/rc-auth.module";
     AdminViewTeacherComponent,
     AdminAdminsComponent,
     AdminAddAdminComponent,
-    AdminViewAdminComponent
+    AdminViewAdminComponent,
+    AdminSchoolSettingComponent
   ],
   imports: [
     CommonModule,

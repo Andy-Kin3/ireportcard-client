@@ -1,67 +1,32 @@
 import {Component, OnInit} from '@angular/core';
-import {MenuItem} from "primeng/api";
+import {NavItem, SIDEBAR_ADMIN_MENU_ITEMS} from "../../../../models/ui/nav-item";
 
 @Component({
   selector: 'app-admin-dashboard',
   styleUrls: ['./admin-dashboard.component.scss'],
   template: `
-    <header class="z-1 w-full fixed top-0">
-      <p-toast></p-toast>
-      <app-top-menu [menuItems]="adminMenuItems"></app-top-menu>
-    </header>
-    <main class="z-0 h-full min-h-screen m-2 py-8">
-      <router-outlet></router-outlet>
-    </main>
-    <footer class="z-1">
-      <app-footer></app-footer>
-    </footer>
+    <div class="min-h-screen flex surface-ground">
+      <app-sidebar [navItems]="adminMenuItems"></app-sidebar>
+      <div class="min-h-screen flex flex-column relative flex-auto">
+        <app-top-menu></app-top-menu>
+
+        <div class="flex flex-column flex-auto">
+          <div class="p-5">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
   `
 })
 export class AdminDashboardComponent implements OnInit {
-  adminMenuItems: MenuItem[] = [];
+  adminMenuItems: NavItem[] = [];
 
   constructor() {
   }
 
   ngOnInit(): void {
-    this.adminMenuItems = [
-      {
-        label: 'Home',
-        icon: 'pi pi-fw pi-home',
-        routerLink: ['/admin'],
-        routerLinkActiveOptions: {exact: true},
-      },
-      {
-        label: 'Users',
-        icon: 'pi pi-fw pi-user',
-        routerLink: ['/admin/users'],
-        routerLinkActiveOptions: {exact: true},
-      },
-      {
-        label: 'Admins',
-        icon: 'pi pi-fw pi-user',
-        routerLink: ['/admin/admins'],
-        routerLinkActiveOptions: {exact: true},
-      },
-      {
-        label: 'Teachers',
-        icon: 'pi pi-fw pi-user',
-        routerLink: ['/admin/teachers'],
-        routerLinkActiveOptions: {exact: true},
-      },
-      {
-        label: 'Settings',
-        icon: 'pi pi-fw pi-cog',
-        routerLink: ['/admin/settings'],
-        routerLinkActiveOptions: {exact: true},
-      },
-      {
-        label: 'School Dashboard',
-        icon: 'pi pi-fw pi-arrow-right',
-        routerLink: ['/dashboard'],
-        routerLinkActiveOptions: {exact: true},
-      },
-    ]
+    this.adminMenuItems = SIDEBAR_ADMIN_MENU_ITEMS;
   }
 
 }

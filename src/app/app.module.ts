@@ -18,12 +18,15 @@ import {RcStudentModule} from "./modules/rc-student/rc-student.module";
 import {RcReusableModule} from "./modules/rc-reusable/rc-reusable.module";
 import {RcSharedModule} from "./modules/rc-shared.module";
 import {LocationStrategy, PathLocationStrategy} from "@angular/common";
+import {RcSetupModule} from "./modules/rc-setup/rc-setup.module";
+import {SampleComponent} from './components/sample/sample.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     RcWelcomeComponent,
+    SampleComponent,
   ],
   imports: [
     RcReusableModule,
@@ -32,6 +35,7 @@ import {LocationStrategy, PathLocationStrategy} from "@angular/common";
     RcAuthModule,
     RcAdminModule,
     RcStudentModule,
+    RcSetupModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,

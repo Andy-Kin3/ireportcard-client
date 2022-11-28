@@ -46,20 +46,24 @@ export class StudentResultsComponent implements OnInit {
   loadUser = () => this._userService.getCompleteFromSession().subscribe(res => {
     this.user = res;
     const student = this.user.account as Student;
-    this._studentApplicationService.getAllByStudent(student.id).subscribe(studentApplications => {
-      this.studentApplicationTrials = [];
-      studentApplications.forEach(sa => {
-        this.studentApplicationTrials.push(...sa.studentApplicationTrials);
-        this.studentClassLevels.push({
-          classLevel: sa.classLevel, id: sa.classLevel.id,
-          classLevelSub: sa.classLevelSub, subId: sa.classLevelSub.id,
-          name: `${sa.classLevel.name} ${sa.classLevelSub.name}`
+    this._studentApplicationService.getAllByStudent(student.id!!).subscribe(
+      (studentApplications) => {
+        this.studentApplicationTrials = [];
+        studentApplications.forEach(sa => {
+          this.studentApplicationTrials.push(...sa.studentApplicationTrials);
+          this.studentClassLevels.push({
+            classLevel: sa.classLevel,
+            id: sa.classLevel.id!!,
+            classLevelSub: sa.classLevelSub,
+            subId: sa.classLevelSub.id!!,
+            name: `${sa.classLevel.name} ${sa.classLevelSub.name}`
+          });
+          this.rcRequest.classLevelSubId = sa.classLevelSub.id!!;
         });
-        this.rcRequest.classLevelSubId = sa.classLevelSub.id;
-      });
-    });
+      }
+    );
   });
-  loadTerms = () => this._termService.getAll().subscribe(res => this.terms = res);
+  loadTerms = () => this._termService.getAllBySchoolId(0 /* TODO remove this */).subscribe(res => this.terms = res);
   loadYears = () => this._academicYearService.getAll().subscribe(res => this.academicYears = res);
 
   requestResults() {
@@ -68,7 +72,9 @@ export class StudentResultsComponent implements OnInit {
     if (requestResultAlright) {
       const student: Student = this.user.account as Student;
       this._studentApplicationService.getTrialWithParams(
-        student.id, this.rcRequest.classLevelSubId, this.rcRequest.academicYearId
+        student.id!!,
+        this.rcRequest.classLevelSubId,
+        this.rcRequest.academicYearId
       ).subscribe({
         next: (sat) => {
           this.loadReportCardModel(sat.id, this.rcRequest.termId);

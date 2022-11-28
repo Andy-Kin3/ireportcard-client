@@ -2,8 +2,21 @@ import {Role} from "../enum/role.enum";
 import {Teacher} from "./teacher.model";
 import {Student} from "./student.model";
 import {BaseModel} from "../base/base.model";
+import {Admin} from "./admin.model";
 
-export class User extends BaseModel{
+export interface User {
+  id?: number,
+  email: string,
+  username: string,
+  firstName: string,
+  lastName: string,
+  phone: string,
+  address: string,
+  approved?: boolean,
+  role?: Role
+}
+
+export class UserModel extends BaseModel implements User {
   constructor(
     public email: string,
     public username: string,
@@ -11,8 +24,8 @@ export class User extends BaseModel{
     public lastName: string,
     public phone: string,
     public address: string,
-    public approved: boolean,
-    public role: Role
+    public approved?: boolean,
+    public role?: Role
   ) {
     super();
   }
@@ -20,8 +33,8 @@ export class User extends BaseModel{
 
 export class UserComplete {
   constructor(
-    public user: User,
-    public account: Student | Teacher | null
+    public user: UserModel,
+    public account?: Student | Teacher | Admin
   ) {
   }
 }

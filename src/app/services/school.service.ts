@@ -14,8 +14,12 @@ export class SchoolService {
   constructor(private http: HttpClient, @Inject(RC_SCHOOL_API_URL) private apiUrl: string) {
   }
 
-  getAll(): Observable<School[]> {
-    return this.http.get<School[]>(this.apiUrl)
+  getAllBySchoolManagerId(schoolManagerId: number): Observable<School[]> {
+    return this.http.get<School[]>(`${this.apiUrl}/school-manager/${schoolManagerId}`)
+  }
+
+  getAllBySchoolManagerSmId(schoolManagerSmId: string): Observable<School[]> {
+    return this.http.get<School[]>(`${this.apiUrl}/school-manager/sm/${schoolManagerSmId}`)
   }
 
   getById(id: number): Observable<School> {
@@ -53,5 +57,9 @@ export class SchoolService {
         i++;
       }, 250);
     });
+  }
+
+  getsAll(): Observable<School[]> {
+    return this.http.get<School[]>(`${this.apiUrl}/school-manager/sm/`)
   }
 }

@@ -3,6 +3,9 @@ import {HttpClient} from "@angular/common/http";
 import {RC_STUDENT_CLASS_LEVEL_API_URL} from "../app.constants";
 import {StudentClassLevel} from "../app.types";
 import {Observable} from "rxjs";
+import {SchoolBaseServiceStrategy} from "./strategy/service.strategy";
+import {SchoolBaseParams} from "./strategy/service.strategy.params";
+import {NO_ENTITY_ID} from "../models/base/base.model";
 
 @Injectable({
   providedIn: 'root'
@@ -14,5 +17,23 @@ export class StudentClassLevelService {
 
   getAllBySchool = (schoolId: number): Observable<StudentClassLevel[]> => {
     return this.http.get<StudentClassLevel[]>(`${this.apiUrl}/school/${schoolId}`)
+  }
+
+  loadStudentClassLevels(
+    studentClassLevels: StudentClassLevel[],
+    strategy: SchoolBaseServiceStrategy,
+    params: SchoolBaseParams,
+    actions?: Function[]
+  ) {
+    switch (strategy) {
+      case SchoolBaseServiceStrategy.BY_SCHOOL: {
+        this.getAllBySchool(params.schoolId ?? NO_ENTITY_ID).subscribe((res) => {
+          studentClassLevels = res
+          actions?.forEach(action => action(studentClassLevels))
+        });
+        break;
+      }
+
+    }
   }
 }

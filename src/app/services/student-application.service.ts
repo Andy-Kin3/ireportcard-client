@@ -41,10 +41,10 @@ export class StudentApplicationService {
     });
   }
 
-  getAllByRequest(request: ApplicationRequest): Observable<ApplicationResponse[]> {
-    return this.http.get<ApplicationResponse[]>(`${this.apiUrl}/all_full`, {
-      params: {yearId: request.yearId, classId: request.classSubId}
-    });
+  getAllByClassSubIdAndAcademicYearId(classSubId: number, academicYearId: number): Observable<ApplicationResponse[]> {
+    return this.http.get<ApplicationResponse[]>(
+      `${this.apiUrl}/all-full/classSubId/${classSubId}/year/${academicYearId}`,
+    );
   }
 
   save(application: ApplicationRequest): Observable<ApiResponse> {

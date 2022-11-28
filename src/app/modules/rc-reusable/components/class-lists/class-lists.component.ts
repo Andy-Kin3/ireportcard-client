@@ -19,7 +19,7 @@ import {StudentClassLevel} from "../../../../app.types";
 export class ClassListsComponent implements OnInit {
 
   classListRequest: ClassListRequest;
-  classListResponse: ClassListResponse;
+  classListResponse?: ClassListResponse;
 
   @Input() teacher?: Teacher;
   @Input() classes: StudentClassLevel[] = [];
@@ -33,12 +33,6 @@ export class ClassListsComponent implements OnInit {
     private msg: MessageService
   ) {
     this.classListRequest = new ClassListRequest(-1, -1, -1, -1);
-    this.classListResponse = {
-      classLevel: {id: -1, name: '', order: 0, sectionId: -1},
-      classLevelSub: {id: -1, classLevelId: -1, name: ''},
-      subject: {id: -1, name: '', code: '', coefficient: 0, sectionId: -1},
-      className: '', sequenceName: '', studentGrades: []
-    };
   }
 
   ngOnInit(): void {
@@ -54,7 +48,7 @@ export class ClassListsComponent implements OnInit {
 
   saveGrade(grade: Grade, gradeInput: HTMLInputElement) {
     if (this.teacher) {
-      grade.graderId = this.teacher.id;
+      grade.graderId = this.teacher.id!!;
       const newScore = this.getGradeInputValue(gradeInput);
       if (newScore >= 0 && newScore <= 20) {
         if (grade.score) {

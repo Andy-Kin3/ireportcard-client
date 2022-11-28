@@ -28,7 +28,7 @@ export interface StudentApplicationTrial {
 
 export interface ApplicationRequest {
   classSubId: number;
-  yearId: number;
+  academicYearId: number;
   studentId: number;
 }
 
@@ -38,8 +38,8 @@ export interface ApplicationsRequest {
 }
 
 export interface ApplicationResponse {
-  class_name: string;
+  className: string;
   student: Student;
   application: StudentApplication;
-  application_trials: StudentApplicationTrial[];
+  applicationTrials: StudentApplicationTrial[];
 }

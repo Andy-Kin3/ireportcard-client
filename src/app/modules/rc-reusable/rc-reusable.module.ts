@@ -7,6 +7,8 @@ import {ViewApplicationComponent} from "./components/view-application/view-appli
 import {ChangePasswordComponent} from './components/change-password/change-password.component';
 import {UserDetailsComponent} from './components/user-details/user-details.component';
 import {ClassListsComponent} from './components/class-lists/class-lists.component';
+import {SidebarComponent} from './components/sidebar/sidebar.component';
+import {NavItemComponent} from './components/nav-item/nav-item.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,9 @@ import {ClassListsComponent} from './components/class-lists/class-lists.componen
     ViewApplicationComponent,
     ChangePasswordComponent,
     UserDetailsComponent,
-    ClassListsComponent
+    ClassListsComponent,
+    SidebarComponent,
+    NavItemComponent
   ],
   imports: [
     CommonModule,
@@ -27,7 +31,8 @@ import {ClassListsComponent} from './components/class-lists/class-lists.componen
     ViewApplicationComponent,
     ChangePasswordComponent,
     UserDetailsComponent,
-    ClassListsComponent
+    ClassListsComponent,
+    SidebarComponent
   ]
 })
 export class RcReusableModule {

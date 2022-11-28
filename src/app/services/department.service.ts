@@ -17,15 +17,15 @@ export class DepartmentService {
     return this.http.get<Section>(`${this.apiUrl}/${id}`);
   }
 
-  getAllBySchoolId(schoolId: number): Observable<Section[]> {
-    return this.http.get<Section[]>(`${this.apiUrl}/school/${schoolId}`);
+  getAllBySchoolId(schoolId: number): Observable<Department[]> {
+    return this.http.get<Department[]>(`${this.apiUrl}/school/${schoolId}`);
   }
 
-  save(section: Department): Observable<Section> {
-    return this.http.post<Section>(this.apiUrl, section);
+  save(department: Department): Observable<Department> {
+    return this.http.post<Department>(this.apiUrl, department);
   }
 
-  update(section: Section): Observable<Section> {
-    return this.http.put<Section>(`${this.apiUrl}`, section);
+  update(department: Department): Observable<Department> {
+    return this.http.put<Department>(`${this.apiUrl}`, department);
   }
 }

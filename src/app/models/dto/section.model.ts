@@ -1,12 +1,12 @@
 import {BaseModel} from "../base/base.model";
 
-export interface Section {
-  id: number;
+export interface ISection {
+  id?: number;
   name: string;
   schoolId: number;
 }
 
-export class Section extends BaseModel {
+export class Section extends BaseModel implements ISection {
   constructor(
     public name: string,
     public schoolId: number,

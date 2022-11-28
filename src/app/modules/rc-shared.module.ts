@@ -33,6 +33,7 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {DialogModule} from "primeng/dialog";
 import {ToolbarModule} from "primeng/toolbar";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {BadgeModule} from "primeng/badge";
 
 // TODO find duplicates and remove
 
@@ -102,6 +103,7 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
     DialogModule,
     ToolbarModule,
     ProgressSpinnerModule,
+    BadgeModule,
   ],
   exports: [
     MenubarModule,

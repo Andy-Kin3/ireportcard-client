@@ -1,29 +1,35 @@
-<div class="rc-home">
-  <app-rc-body-intro
-    [buttonIcon]="'pi pi-cog'"
-    [buttonLabel]="'Settings'"
-    [buttonLink]="'#'"
-    [title]="'Home'">
-  </app-rc-body-intro>
-
-  <!-- Home Stats -->
-  <div class="row py-4">
-    <div *ngFor="let stat of homeStats" class="col-md-3 p-2">
-      <p-card styleClass="shadow-1 bg-indigo-700 p-3 text-white">
-        <ng-template pTemplate="header">
-          <div class="d-flex">
-            <i class="{{stat.icon}} text-white-alpha-90"></i>&nbsp;
-            <span class="h6">{{stat.title}}</span>
-            <span class="spacer"></span>
-            <a routerLink="{{stat.link}}">
-              <span class="pi pi-arrow-right text-white-alpha-90"></span>
-            </a>
+<div class="surface-section p-5">
+  <div class="flex align-items-start flex-column lg:flex-row lg:justify-content-between">
+    <div class="flex align-items-start flex-column md:flex-row">
+      <img src="assets/images/blocks/avatars/circle/avatar-f-1@2x.png" class="mr-5 mb-3 lg:mb-0"
+           style="width:90px;height:90px"/>
+      <div>
+        <span class="text-900 font-medium text-3xl">Kathryn Murphy</span>
+        <i class="pi pi-star text-2xl ml-4 text-yellow-500"></i>
+        <div class="flex align-items-center flex-wrap text-sm">
+          <div class="mr-5 mt-3">
+            <span class="font-medium text-500">FOLLOWERS</span>
+            <div class="text-700 mt-2">333</div>
           </div>
-        </ng-template>
-        <ng-template pTemplate="body">
-          <span class="text-7xl">{{homeStatsValueDisplay(stat.value)}}</span>
-        </ng-template>
-      </p-card>
+          <div class="mr-5 mt-3">
+            <span class="font-medium text-500">PROJECTS</span>
+            <div class="text-700 mt-2">26</div>
+          </div>
+          <div class="mr-5 mt-3">
+            <span class="font-medium text-500">COLLECTIONS</span>
+            <div class="text-700 mt-2">17</div>
+          </div>
+          <div class="mt-3">
+            <span class="font-medium text-500">SHOTS</span>
+            <div class="text-700 mt-2">130</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-3 lg:mt-0">
+      <button pButton pRipple icon="pi pi-bookmark" class="p-button-rounded mr-2"></button>
+      <button pButton pRipple icon="pi pi-heart" class="p-button-rounded p-button-success mr-2"></button>
+      <button pButton pRipple icon="pi pi-list" class="p-button-rounded p-button-help"></button>
     </div>
   </div>
 </div>

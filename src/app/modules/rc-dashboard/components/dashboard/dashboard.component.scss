@@ -22,3 +22,13 @@ app-top-menu {
   width: 100%;
   z-index: 2;
 }
+
+
+.backdrop-blur {
+  backdrop-filter: blur(10px);
+  -webkit-filter: blur(1px);
+  -moz-filter: blur(1px);
+  -o-filter: blur(1px);
+  -ms-filter: blur(1px);
+  filter: blur(10px);
+}

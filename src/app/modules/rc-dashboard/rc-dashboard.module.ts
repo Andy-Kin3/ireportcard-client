@@ -25,6 +25,7 @@ import {
   RcViewApplicationComponent
 } from './components/rc-applications/rc-view-application/rc-view-application.component';
 import {RcSelectSchoolComponent} from "./components/rc-select-school/rc-select-school.component";
+import {DepartmentSettingsComponent} from './components/rc-settings/department-settings/department-settings.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import {RcSelectSchoolComponent} from "./components/rc-select-school/rc-select-s
     AddClassLevelComponent,
     AddSubjectComponent,
     RcViewApplicationComponent,
+    DepartmentSettingsComponent,
   ],
   imports: [
     RcDashboardRoutingModule,

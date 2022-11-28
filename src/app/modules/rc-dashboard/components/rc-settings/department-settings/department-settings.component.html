@@ -1,0 +1,25 @@
+<p-panel [header]="'School Departments'" [toggleable]="true" [styleClass]="'py-4'">
+  <div class="">
+    <div *ngFor="let department of departments" class=" my-2 d-flex">
+      <input pInputText #departmentUpdateInput [disabled]="true" [(ngModel)]="department.name" class="w-full">&nbsp;
+      <p-toggleButton [(ngModel)]="departmentUpdateInput.disabled" [onLabel]="'Edit'"
+                      [offLabel]="'Save'" (click)="saveDepartment(department, departmentUpdateInput.disabled)">
+      </p-toggleButton>&nbsp;
+      <button pButton label="Delete" class="p-button-danger" (click)="deleteDepartment(department)"></button>
+    </div>
+  </div>
+  <p-divider></p-divider>
+  <div class="">
+    <div class="d-flex">
+      <div class="mr-auto">
+        <input pInputText #departmentInput [hidden]="true">&nbsp;
+      </div>
+      <div class="ml-auto">
+        <p-toggleButton [(ngModel)]="departmentInput.hidden" [onLabel]="'Add'"
+                        [offLabel]="departmentInput.value.length == 0? 'Cancel': 'Save'"
+                        (click)="saveDepartment(departmentInput, departmentInput.hidden)">
+        </p-toggleButton>
+      </div>
+    </div>
+  </div>
+</p-panel>

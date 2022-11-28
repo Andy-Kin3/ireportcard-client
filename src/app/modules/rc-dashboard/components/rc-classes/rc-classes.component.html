@@ -38,7 +38,7 @@
                     Number of students applied: {{classLevelSub.numberOfStudents ? classLevelSub.numberOfStudents : 0}}
                   </span>
                 <div class="py-2">
-                  <button (click)="deleteClassSubAction(c.classLevel, classLevelSub.id)" pButton icon="pi pi-trash"
+                  <button (click)="deleteClassSubAction(c.classLevel, classLevelSub.id!!)" pButton icon="pi pi-trash"
                           class="p-button-danger"></button>
                 </div>
                 <!-- TODO fetch this data from backend -->

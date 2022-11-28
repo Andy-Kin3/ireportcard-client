@@ -15,12 +15,12 @@
       <!-- If the applications are not loading properly for some reason, check that the order of the ngModel and ngModelChange attribs is correct -->
       <div class="col-md-6">
         <label class="block text-800 font-medium mb-2">Select Academic Year</label>
-        <p-dropdown [(ngModel)]="applicationsRequest.yearId" (onChange)="loadApplications()" [options]="academicYears"
+        <p-dropdown [(ngModel)]="request.yearId" (onChange)="loadApplications()" [options]="academicYears"
                     [optionLabel]="'name'" [optionValue]="'id'" [styleClass]="'w-100'"></p-dropdown>
       </div>
       <div class="col-md-6">
         <label class="block text-800 font-medium mb-2">Select Class</label>
-        <p-dropdown [(ngModel)]="applicationsRequest.classSubId" (onChange)="loadApplications()" [options]="classes"
+        <p-dropdown [(ngModel)]="request.classSubId" (onChange)="loadApplications()" [options]="classes"
                     [optionLabel]="'name'" [optionValue]="'subId'" [styleClass]="'w-100'"></p-dropdown>
       </div>
     </div>
@@ -32,20 +32,20 @@
         <tr>
           <th>Student</th>
           <th>Reg No</th>
-          <th *ngIf="applicationsRequest.classSubId < 0">Class Level</th>
+          <th *ngIf="request.classSubId < 0">Class Level</th>
           <th>Applied On</th>
           <th>Number of Subjects</th>
           <th>Actions</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-studentAT>
-        <tr *ngIf="applicationsRequest.yearId < 1">
+        <tr *ngIf="request.yearId < 1">
           <td colspan="5">Select all fields above to view student applications</td>
         </tr>
         <tr>
           <td>{{studentAT.student.name}}</td>
           <td>{{studentAT.student.regNum}}</td>
-          <td *ngIf="applicationsRequest.classSubId < 0">{{studentAT.application.key.classSubId}}</td>
+          <td *ngIf="request.classSubId < 0">{{studentAT.application.key.classSubId}}</td>
           <td>{{studentAT.sat.createdAt}}</td>
           <td>{{studentAT.sat.numberOfSubjects}}</td>
           <td>

@@ -1,10 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../../../services/auth.service";
-import {UserLoginRequest} from "../../../../models/dto/user.model";
+import {UserComplete, UserLoginRequest} from "../../../../models/dto/user.model";
 import {LocalStorageUtil} from "../../../../utils/local-storage.util";
 import {Router} from "@angular/router";
 import {ReportCardService} from "../../../../services/report-card.service";
+import {UserService} from "../../../../services/user.service";
+import {Admin} from "../../../../models/dto/admin.model";
+import {Student} from "../../../../models/dto/student.model";
+import {Teacher} from "../../../../models/dto/teacher.model";
 
 @Component({
   selector: 'app-login',
@@ -18,6 +22,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
+    private _userService: UserService,
     private defaultService: ReportCardService,
     private reportCardService: ReportCardService,
   ) {
@@ -57,15 +62,15 @@ export class LoginComponent implements OnInit {
       this.reportCardService.testAuthStudent().subscribe((isStudent) => {
         console.log("student : " + isStudent)
         if (isStudent) {
-          this.router.navigate(['/student']).then()
+          this.router.navigate(['/student']).then(() => this.writeSchool())
         } else {
           this.reportCardService.testAuthTeacher().subscribe((isTeacher) => {
             if (isTeacher) {
-              this.router.navigate(['/teacher']).then()
+              this.router.navigate(['/teacher']).then(() => this.writeSchool());
             } else {
               this.reportCardService.testAuthAdmin().subscribe((isAdmin) => {
                 if (isAdmin) {
-                  this.router.navigate(['/admin']).then()
+                  this.router.navigate(['/admin']).then(() => this.writeSchoolManager())
                 }
               });
             }
@@ -73,6 +78,23 @@ export class LoginComponent implements OnInit {
         }
       });
     });
+  }
+
+  private writeSchool(): void {
+    this._userService.loadUserFromSessionWithCallbacks([(userComplete: UserComplete) => {
+      const schoolId = (userComplete.account as Teacher | Student).schoolId;
+      LocalStorageUtil.writeSchoolId(schoolId);
+    }]);
+  }
+
+  private writeSchoolManager(): void {
+    this._userService.loadUserFromSessionWithCallbacks([(userComplete: UserComplete) => {
+      const admin = userComplete.account as Admin;
+      LocalStorageUtil.writeSchoolManager({
+        id: admin.schoolManagerId,
+        smId: admin.schoolManagerSmId
+      });
+    }]);
   }
 
   private checkIfLoggedIn() {

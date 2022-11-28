@@ -2,14 +2,14 @@ import {VersionedModel} from "../base/versioned.model";
 import {ClassLevelSub} from "./class-level-sub.model";
 
 export interface ClassLevel {
-  id: number;
+  id?: number;
   name: string;
   order?: number;
   sectionId: number;
   classLevelSubs?: ClassLevelSub[]
 }
 
-export class ClassLevel extends VersionedModel{
+export class ClassLevel extends VersionedModel {
   constructor(
     public name: string,
     public sectionId: number,

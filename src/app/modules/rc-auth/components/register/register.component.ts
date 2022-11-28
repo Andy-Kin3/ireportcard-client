@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {User} from "../../../../models/dto/user.model";
+import {UserModel} from "../../../../models/dto/user.model";
 import {AuthService} from "../../../../services/auth.service";
 import {Router} from "@angular/router";
 import {Role} from "../../../../models/enum/role.enum";
@@ -44,7 +44,7 @@ export class RegisterComponent implements OnInit {
 
   registerAction() {
     const password = this.registerForm.get("password")?.value;
-    const user: User = {
+    const user: UserModel = {
       id: -1, role: Role.TEACHER, email: this.registerForm.get("email")?.value, username: '',
       firstName: this.registerForm.get("firstName")?.value, lastName: this.registerForm.get("lastName")?.value,
       phone: this.registerForm.get("phone")?.value, address: this.registerForm.get("address")?.value, approved: false
