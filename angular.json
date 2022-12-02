@@ -116,5 +116,8 @@
       }
     }
   },
-  "defaultProject": "reportcard"
+  "defaultProject": "reportcard",
+  "cli": {
+    "analytics": "0be76915-ae5b-4306-adce-ca01c4f12cac"
+  }
 }
